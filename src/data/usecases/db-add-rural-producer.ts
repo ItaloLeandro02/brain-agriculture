@@ -5,7 +5,6 @@ export class DbAddRuralProducer implements AddRuralProducer {
   constructor (private readonly addRuralProducerRepository: AddRuralProducerRepository) {}
 
   async add (params: AddRuralProducer.Params): Promise<number> {
-    await this.addRuralProducerRepository.add(params)
-    return 1
+    return await this.addRuralProducerRepository.add(params)
   }
 }
