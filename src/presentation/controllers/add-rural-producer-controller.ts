@@ -1,5 +1,5 @@
 import type { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, serverError } from '@/presentation/helpers'
 import type { AddFarm, AddPlantedCrops, AddRuralProducer } from '@/domain/usecases'
 
 export class AddRuralProducerController implements Controller {
@@ -11,22 +11,26 @@ export class AddRuralProducerController implements Controller {
   ) {}
 
   async handle (request: AddRuralProducerController.Request): Promise<HttpResponse> {
-    const error = this.validation.validate(request)
-    if (error) {
-      return badRequest(new Error())
+    try {
+      const error = this.validation.validate(request)
+      if (error) {
+        return badRequest(new Error())
+      }
+      const { cpfCnpj, name, farmName, cityName, state, totalArea, agriculturalArea, vegetationArea, plantedCrops } = request
+      const ruralProducerId = await this.addRuralProducer.add({ cpfCnpj, name })
+      const farmId = await this.addFarm.add({
+        ruralProducerId,
+        name: farmName,
+        cityName,
+        state,
+        totalArea,
+        agriculturalArea,
+        vegetationArea
+      })
+      await this.addPlantedCrops.add({ farmId, plantedCrops })
+    } catch (error) {
+      return serverError(error as Error)
     }
-    const { cpfCnpj, name, farmName, cityName, state, totalArea, agriculturalArea, vegetationArea, plantedCrops } = request
-    const ruralProducerId = await this.addRuralProducer.add({ cpfCnpj, name })
-    const farmId = await this.addFarm.add({
-      ruralProducerId,
-      name: farmName,
-      cityName,
-      state,
-      totalArea,
-      agriculturalArea,
-      vegetationArea
-    })
-    await this.addPlantedCrops.add({ farmId, plantedCrops })
   }
 }
 
