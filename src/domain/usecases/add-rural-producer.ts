@@ -1,5 +1,5 @@
 export interface AddRuralProducer {
-  add: (data: AddRuralProducer.Params) => Promise<void>
+  add: (data: AddRuralProducer.Params) => Promise<number>
 }
 
 export namespace AddRuralProducer {
