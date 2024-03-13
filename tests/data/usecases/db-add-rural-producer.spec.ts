@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker'
 import { DbAddRuralProducer } from '@/data/usecases'
 import type { AddRuralProducer } from '@/domain/usecases'
 import { AddRuralProducerRepositorySpy } from '@/tests/data/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbAddRuralProducer
@@ -33,5 +34,11 @@ describe('AddRuralProducer UseCase', () => {
     const { sut, addRuralProducerRepositorySpy } = makeSut()
     const newRuralProducerId = await sut.add(mockParams())
     expect(newRuralProducerId).toEqual(addRuralProducerRepositorySpy.ruralProducerId)
+  })
+  test('Deve lançar uma exceção caso AddRuralProducerRepository lance uma exceção', async () => {
+    const { sut, addRuralProducerRepositorySpy } = makeSut()
+    jest.spyOn(addRuralProducerRepositorySpy, 'add').mockImplementationOnce(throwError)
+    const promise = sut.add(mockParams())
+    await expect(promise).rejects.toThrow()
   })
 })
