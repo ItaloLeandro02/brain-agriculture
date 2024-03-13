@@ -2,25 +2,28 @@ import { faker } from '@faker-js/faker'
 import { AddRuralProducerController } from '@/presentation/controllers'
 import { badRequest } from '@/presentation/helpers'
 import { ValidationSpy } from '@/tests/presentation/mocks'
-import { AddFarmSpy, AddRuralProducerSpy } from '@/tests/domain/mocks'
+import { AddFarmSpy, AddPlantedCropsSpy, AddRuralProducerSpy } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: AddRuralProducerController
   validationSpy: ValidationSpy
   addRuralProducerSpy: AddRuralProducerSpy
   addFarmSpy: AddFarmSpy
+  addPlantedCropsSpy: AddPlantedCropsSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const addRuralProducerSpy = new AddRuralProducerSpy()
   const addFarmSpy = new AddFarmSpy()
-  const sut = new AddRuralProducerController(validationSpy, addRuralProducerSpy, addFarmSpy)
+  const addPlantedCropsSpy = new AddPlantedCropsSpy()
+  const sut = new AddRuralProducerController(validationSpy, addRuralProducerSpy, addFarmSpy, addPlantedCropsSpy)
   return {
     sut,
     validationSpy,
     addRuralProducerSpy,
-    addFarmSpy
+    addFarmSpy,
+    addPlantedCropsSpy
   }
 }
 
@@ -32,7 +35,8 @@ const mockRequest = (): AddRuralProducerController.Request => ({
   state: 'BA',
   totalArea: 200,
   agriculturalArea: 100,
-  vegetationArea: 100
+  vegetationArea: 100,
+  plantedCrops: ['Soja', 'Milho', 'Algodão', 'Café', 'Cana de Açucar']
 })
 
 describe('AddRuralProducerController', () => {
@@ -70,6 +74,15 @@ describe('AddRuralProducerController', () => {
       totalArea: request.totalArea,
       agriculturalArea: request.agriculturalArea,
       vegetationArea: request.vegetationArea
+    })
+  })
+  test('Deve chamar AddPlantedCrop com os valores corretos', async () => {
+    const { sut, addFarmSpy, addPlantedCropsSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(addPlantedCropsSpy.params).toEqual({
+      farmId: addFarmSpy.farmId,
+      plantedCrops: request.plantedCrops
     })
   })
 })
