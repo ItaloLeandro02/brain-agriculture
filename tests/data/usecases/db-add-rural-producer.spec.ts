@@ -29,4 +29,9 @@ describe('AddRuralProducer UseCase', () => {
     await sut.add(params)
     expect(addRuralProducerRepositorySpy.params).toEqual(params)
   })
+  test('Deve retornar o id do produtor rural cadastrado em caso de sucesso', async () => {
+    const { sut, addRuralProducerRepositorySpy } = makeSut()
+    const newRuralProducerId = await sut.add(mockParams())
+    expect(newRuralProducerId).toEqual(addRuralProducerRepositorySpy.ruralProducerId)
+  })
 })
