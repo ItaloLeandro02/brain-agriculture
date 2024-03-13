@@ -1,23 +1,29 @@
+import { faker } from '@faker-js/faker'
 import { AddRuralProducerController } from '@/presentation/controllers'
 import { badRequest } from '@/presentation/helpers'
 import { ValidationSpy } from '@/tests/presentation/mocks'
+import { AddRuralProducerSpy } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: AddRuralProducerController
   validationSpy: ValidationSpy
+  addRuralProducerSpy: AddRuralProducerSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const sut = new AddRuralProducerController(validationSpy)
+  const addRuralProducerSpy = new AddRuralProducerSpy()
+  const sut = new AddRuralProducerController(validationSpy, addRuralProducerSpy)
   return {
     sut,
-    validationSpy
+    validationSpy,
+    addRuralProducerSpy
   }
 }
 
-const mockRequest = (): AddRuralProducerController.Request => ({
-  cpfCnpj: ''
+const mockRequest = (cpfCnpj = '852.415.280-08'): AddRuralProducerController.Request => ({
+  cpfCnpj,
+  name: faker.person.fullName()
 })
 
 describe('AddRuralProducerController', () => {
@@ -33,5 +39,18 @@ describe('AddRuralProducerController', () => {
     const request = mockRequest()
     const response = await sut.handle(request)
     expect(response).toEqual(badRequest(new Error()))
+  })
+  test('Deve chamar AddRuralProducer com os valores corretos', async () => {
+    const { sut, addRuralProducerSpy } = makeSut()
+    const ruralProducerName = faker.person.fullName()
+    const request = {
+      ...mockRequest(),
+      name: ruralProducerName
+    }
+    await sut.handle(request)
+    expect(addRuralProducerSpy.params).toEqual({
+      cpfCnpj: '852.415.280-08',
+      name: ruralProducerName
+    })
   })
 })
