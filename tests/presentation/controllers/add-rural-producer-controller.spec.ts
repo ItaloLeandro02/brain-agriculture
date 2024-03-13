@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { AddRuralProducerController } from '@/presentation/controllers'
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, noContent, serverError } from '@/presentation/helpers'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { AddFarmSpy, AddPlantedCropsSpy, AddRuralProducerSpy, throwError } from '@/tests/domain/mocks'
 
@@ -102,5 +102,10 @@ describe('AddRuralProducerController', () => {
     jest.spyOn(addPlantedCropsSpy, 'add').mockImplementationOnce(throwError)
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(serverError(new Error()))
+  })
+  test('Deve retornar 204 em caso de sucesso', async () => {
+    const { sut } = makeSut()
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(noContent())
   })
 })
