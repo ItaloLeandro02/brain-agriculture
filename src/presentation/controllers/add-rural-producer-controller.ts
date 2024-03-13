@@ -1,5 +1,5 @@
 import type { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, noContent, serverError } from '@/presentation/helpers'
 import type { AddFarm, AddPlantedCrops, AddRuralProducer } from '@/domain/usecases'
 
 export class AddRuralProducerController implements Controller {
@@ -28,6 +28,7 @@ export class AddRuralProducerController implements Controller {
         vegetationArea
       })
       await this.addPlantedCrops.add({ farmId, plantedCrops })
+      return noContent()
     } catch (error) {
       return serverError(error as Error)
     }
