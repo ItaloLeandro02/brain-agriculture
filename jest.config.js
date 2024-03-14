@@ -11,6 +11,7 @@ module.exports = {
   ],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
+	preset: '@shelf/jest-postgres',
   transform: {
     '.+\\.ts$': 'ts-jest'
   },
