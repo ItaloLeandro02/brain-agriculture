@@ -12,4 +12,9 @@ describe('RequiredField Validation', () => {
     const error = sut.validate({ name: faker.person.fullName() })
     expect(error).toEqual(new MissinParamError('field'))
   })
+  test('Não deve retornar error caso de sucesso', () => {
+    const sut = makeSut()
+    const error = sut.validate({ field: faker.person.fullName() })
+    expect(error).toBeFalsy()
+  })
 })
