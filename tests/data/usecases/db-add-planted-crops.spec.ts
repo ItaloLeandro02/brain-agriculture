@@ -1,8 +1,6 @@
-import { faker } from '@faker-js/faker'
-import type { AddPlantedCropsRepository } from '@/data/protocols'
 import { DbAddPlantedCrops } from '@/data/usecases'
 import { AddPlantedCropsRepositorySpy } from '@/tests/data/mocks'
-import { throwError } from '@/tests/domain/mocks'
+import { mockAddPlantedCropsParams, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbAddPlantedCrops
@@ -18,22 +16,17 @@ const makeSut = (): SutTypes => {
   }
 }
 
-const mockParams = (): AddPlantedCropsRepository.Params => ({
-  farmId: faker.number.int(),
-  plantedCrops: ['Cana de açucar', 'Soja']
-})
-
 describe('DbAddPlantedCrops UseCase', () => {
   test('Deve chamar AddPlantedCropsRepository com os dados corretos', async () => {
     const { sut, addPlantedCropsRepositorySpy } = makeSut()
-    const params = mockParams()
+    const params = mockAddPlantedCropsParams()
     await sut.add(params)
     expect(addPlantedCropsRepositorySpy.params).toEqual(params)
   })
   test('Deve lançar uma exceção caso AddPlantedCropsRepository lance uma exceção', async () => {
     const { sut, addPlantedCropsRepositorySpy } = makeSut()
     jest.spyOn(addPlantedCropsRepositorySpy, 'add').mockImplementationOnce(throwError)
-    const promise = sut.add(mockParams())
+    const promise = sut.add(mockAddPlantedCropsParams())
     await expect(promise).rejects.toThrow()
   })
 })
