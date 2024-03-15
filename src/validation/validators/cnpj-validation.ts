@@ -9,7 +9,9 @@ export class CnpjValidation implements Validation {
   ) {}
 
   validate (input: any): Error {
-    this.cnpjValidator.isValid(input[this.fieldName])
-    return new InvalidParamError(this.fieldName)
+    const isValid = this.cnpjValidator.isValid(input[this.fieldName])
+    if (!isValid) {
+      return new InvalidParamError(this.fieldName)
+    }
   }
 }
