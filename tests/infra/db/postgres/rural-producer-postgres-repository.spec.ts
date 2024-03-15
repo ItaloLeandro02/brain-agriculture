@@ -16,17 +16,17 @@ const mockParams = (): AddRuralProducerRepository.Params => ({
 })
 
 describe('RuralProducer Postgres Repository', () => {
-	beforeAll(() => {
-		KnexHelper.connect()
+  beforeAll(() => {
+    KnexHelper.connect()
   })
 
-  afterAll(() => {
-		KnexHelper.disconnect()
+  afterAll(async () => {
+    await KnexHelper.disconnect()
   })
 
   beforeEach(async () => {
-		ruralProducerTable = KnexHelper.getInstance('rural_producer')
-		await ruralProducerTable.delete()
+    ruralProducerTable = KnexHelper.getInstance('rural_producer')
+    await ruralProducerTable.delete()
   })
 
   describe('add', () => {
@@ -36,9 +36,9 @@ describe('RuralProducer Postgres Repository', () => {
       const newRuralProducerId = await sut.add(params)
       const newRuralProducerId2 = await sut.add(params)
       const newRuralProducerId3 = await sut.add(params)
-			expect(newRuralProducerId).toBe(1)
-			expect(newRuralProducerId2).toBe(2)
-			expect(newRuralProducerId3).toBe(3)
+      expect(newRuralProducerId).toBe(1)
+      expect(newRuralProducerId2).toBe(2)
+      expect(newRuralProducerId3).toBe(3)
     })
   })
 })
