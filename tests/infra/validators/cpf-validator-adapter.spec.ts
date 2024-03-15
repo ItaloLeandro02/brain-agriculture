@@ -1,5 +1,5 @@
 import { cpf as cpfValidator } from 'cpf-cnpj-validator'
-import { CpfValidatorAdapter } from '@/infra/validators/cpf-validator-adapter'
+import { CpfValidatorAdapter } from '@/infra/validators'
 
 jest.mock('cpf-cnpj-validator', () => ({
   cpf: {
