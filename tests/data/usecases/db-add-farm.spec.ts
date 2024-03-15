@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker'
 import { DbAddFarm } from '@/data/usecases'
 import type { AddFarmRepository } from '@/data/protocols'
 import { AddFarmRepositorySpy } from '@/tests/data/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbAddFarm
@@ -38,5 +39,11 @@ describe('DbAddFarm UseCase', () => {
     const { sut, addFarmRepositorySpy } = makeSut()
     const newFarmId = await sut.add(mockParams())
     expect(newFarmId).toEqual(addFarmRepositorySpy.farmId)
+  })
+  test('Deve lançar uma exceção caso AddFarmRepository lance uma exceção', async () => {
+    const { sut, addFarmRepositorySpy } = makeSut()
+    jest.spyOn(addFarmRepositorySpy, 'add').mockImplementationOnce(throwError)
+    const promise = sut.add(mockParams())
+    await expect(promise).rejects.toThrow()
   })
 })
