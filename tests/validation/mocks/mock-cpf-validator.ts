@@ -2,10 +2,10 @@ import type { CpfValidator } from '@/validation/protocols'
 
 export class CpfValidatorSpy implements CpfValidator {
   cpf: string
-  cpfIsValid = true
+  isCpfValid = true
 
   isValid (cpf: string): boolean {
     this.cpf = cpf
-    return this.cpfIsValid
+    return this.isCpfValid
   }
 }

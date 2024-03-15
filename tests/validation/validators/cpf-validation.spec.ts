@@ -27,7 +27,7 @@ describe('CPF Validation', () => {
   })
   test('Deve retornar InvalidParamError caso CpfValidator retorne false', () => {
     const { sut, cpfValidatorSpy } = makeSut()
-    cpfValidatorSpy.cpfIsValid = false
+    cpfValidatorSpy.isCpfValid = false
     const error = sut.validate({ cpf: generate() })
     expect(error).toEqual(new InvalidParamError('cpf'))
   })
