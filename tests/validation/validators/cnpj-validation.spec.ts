@@ -30,4 +30,9 @@ describe('CNPJ Validation', () => {
     const error = sut.validate({ cnpj: cnpj.generate() })
     expect(error).toEqual(new InvalidParamError('cnpj'))
   })
+  test('Não deve retornar um error caso CnpjValidator retorne true', () => {
+    const { sut } = makeSut()
+    const error = sut.validate({ cnpj: cnpj.generate() })
+    expect(error).toBeFalsy()
+  })
 })
