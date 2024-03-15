@@ -13,4 +13,9 @@ describe('CpfValidator Adapter', () => {
     sut.isValid(cpf)
     expect(isValidSpy).toHaveBeenCalledWith(cpf)
   })
+  test('Deve retornar false caso o Validator retorne false', () => {
+    const sut = makeSut()
+    jest.spyOn(cpfValidator, 'isValid').mockReturnValueOnce(false)
+    expect(sut.isValid('111.111.111-11')).toBe(false)
+  })
 })
