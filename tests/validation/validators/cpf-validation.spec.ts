@@ -30,4 +30,9 @@ describe('CPF Validation', () => {
     const error = sut.validate({ cpf: generate() })
     expect(error).toEqual(new InvalidParamError('cpf'))
   })
+  test('Não deve retornar um error caso CpfValidator retorne true', () => {
+    const { sut } = makeSut()
+    const error = sut.validate({ cpf: generate() })
+    expect(error).toBeFalsy()
+  })
 })
