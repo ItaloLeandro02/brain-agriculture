@@ -2,21 +2,22 @@ import { faker } from '@faker-js/faker'
 import { AddRuralProducerController } from '@/presentation/controllers'
 import { badRequest, noContent, serverError } from '@/presentation/helpers'
 import { ValidationSpy } from '@/tests/presentation/mocks'
-import { AddFarmSpy, AddPlantedCropsSpy, AddRuralProducerSpy, throwError } from '@/tests/domain/mocks'
+import { throwError } from '@/tests/domain/mocks'
+import { AddFarmRepositorySpy, AddPlantedCropsRepositorySpy, AddRuralProducerRepositorySpy } from '@/tests/data/mocks'
 
 type SutTypes = {
   sut: AddRuralProducerController
   validationSpy: ValidationSpy
-  addRuralProducerSpy: AddRuralProducerSpy
-  addFarmSpy: AddFarmSpy
-  addPlantedCropsSpy: AddPlantedCropsSpy
+  addRuralProducerSpy: AddRuralProducerRepositorySpy
+  addFarmSpy: AddFarmRepositorySpy
+  addPlantedCropsSpy: AddPlantedCropsRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const addRuralProducerSpy = new AddRuralProducerSpy()
-  const addFarmSpy = new AddFarmSpy()
-  const addPlantedCropsSpy = new AddPlantedCropsSpy()
+  const addRuralProducerSpy = new AddRuralProducerRepositorySpy()
+  const addFarmSpy = new AddFarmRepositorySpy()
+  const addPlantedCropsSpy = new AddPlantedCropsRepositorySpy()
   const sut = new AddRuralProducerController(validationSpy, addRuralProducerSpy, addFarmSpy, addPlantedCropsSpy)
   return {
     sut,
