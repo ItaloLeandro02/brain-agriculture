@@ -2,6 +2,7 @@ import { generate } from 'gerador-validador-cpf'
 import { CpfValidation } from '@/validation/validators'
 import { InvalidParamError } from '@/presentation/errors'
 import { CpfValidatorSpy } from '@/tests/validation/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: CpfValidation
@@ -34,5 +35,12 @@ describe('CPF Validation', () => {
     const { sut } = makeSut()
     const error = sut.validate({ cpf: generate() })
     expect(error).toBeFalsy()
+  })
+  test('Deve retornar uma exceção caso CpfValidator falhe', () => {
+    const { sut, cpfValidatorSpy } = makeSut()
+    jest.spyOn(cpfValidatorSpy, 'isValid').mockImplementationOnce(throwError)
+    expect(() => {
+      sut.validate({ cpf: generate() })
+    }).toThrow()
   })
 })
