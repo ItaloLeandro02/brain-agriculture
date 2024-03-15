@@ -5,7 +5,6 @@ export class DbAddFarm implements AddFarm {
   constructor (private readonly addFarmRepository: AddFarmRepository) {}
 
   async add (params: AddFarm.Params): Promise<number> {
-    await this.addFarmRepository.add(params)
-    return -1
+    return await this.addFarmRepository.add(params)
   }
 }
