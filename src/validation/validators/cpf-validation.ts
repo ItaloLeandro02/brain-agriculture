@@ -1,5 +1,6 @@
 import type { CpfValidator } from '@/validation/protocols'
 import type { Validation } from '@/presentation/protocols'
+import { InvalidParamError } from '@/presentation/errors'
 
 export class CpfValidation implements Validation {
   constructor (
@@ -9,6 +10,6 @@ export class CpfValidation implements Validation {
 
   validate (input: any): Error {
     this.cpfValidator.isValid(input[this.fieldName])
-    return null
+    return new InvalidParamError(this.fieldName)
   }
 }
