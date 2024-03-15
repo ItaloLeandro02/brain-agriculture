@@ -13,4 +13,9 @@ describe('CnpjValidator Adapter', () => {
     sut.isValid(cnpj)
     expect(isValidSpy).toHaveBeenCalledWith(cnpj)
   })
+  test('Deve retornar false caso o Validator retorne false', () => {
+    const sut = makeSut()
+    jest.spyOn(cnpjValidator, 'isValid').mockReturnValueOnce(false)
+    expect(sut.isValid('11.111.111/1111-11')).toBe(false)
+  })
 })
