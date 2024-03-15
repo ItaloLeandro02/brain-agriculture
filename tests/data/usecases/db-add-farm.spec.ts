@@ -34,4 +34,9 @@ describe('DbAddFarm UseCase', () => {
     await sut.add(params)
     expect(addFarmRepositorySpy.params).toEqual(params)
   })
+  test('Deve retornar o id do fazenda cadastrada em caso de sucesso', async () => {
+    const { sut, addFarmRepositorySpy } = makeSut()
+    const newFarmId = await sut.add(mockParams())
+    expect(newFarmId).toEqual(addFarmRepositorySpy.farmId)
+  })
 })
