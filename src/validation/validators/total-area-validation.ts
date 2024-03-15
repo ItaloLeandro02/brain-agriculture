@@ -9,6 +9,12 @@ export class TotalAreaValidation implements Validation {
   ) {}
 
   validate (input: any): Error {
-    return new InvalidParamError(this.fieldName)
+    const fieldValue = parseFloat(input[this.fieldName])
+    const fieldValue2 = parseFloat(input[this.fieldName2])
+    const fieldValue3 = parseFloat(input[this.fieldName3])
+    const total = fieldValue2 + fieldValue3
+    if (fieldValue !== total) {
+      return new InvalidParamError(this.fieldName)
+    }
   }
 }
