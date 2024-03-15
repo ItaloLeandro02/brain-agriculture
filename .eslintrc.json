@@ -8,6 +8,7 @@
 		"@typescript-eslint/prefer-nullish-coalescing": "off",
 		"@typescript-eslint/consistent-type-definitions": "off",
 		"@typescript-eslint/no-namespace": "off",
-		"@typescript-eslint/consistent-type-assertions": "off"
+		"@typescript-eslint/consistent-type-assertions": "off",
+		"@typescript-eslint/no-unsafe-argument": "off"
 	}
 }
