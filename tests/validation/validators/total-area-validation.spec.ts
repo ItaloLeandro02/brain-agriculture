@@ -22,4 +22,9 @@ describe('TotalArea Validation', () => {
     const error = sut.validate({ ...mockParams(), vegetationArea: 150 })
     expect(error).toEqual(new InvalidParamError('totalArea'))
   })
+  test('Deve retornar InvalidParamError caso a soma da área agriculável com área de vegetação seja menor do que à área total', () => {
+    const sut = makeSut()
+    const error = sut.validate({ ...mockParams(), vegetationArea: 50 })
+    expect(error).toEqual(new InvalidParamError('totalArea'))
+  })
 })
