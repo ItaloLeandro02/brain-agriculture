@@ -1,19 +1,13 @@
 import type { Knex } from 'knex'
-import { faker } from '@faker-js/faker'
 import { RuralProducerPostgresRepository } from '@/infra/db/postgres'
 import { KnexHelper } from '@/infra/db/postgres/helpers'
-import type { AddRuralProducerRepository } from '@/data/protocols'
+import { mockAddRuralProducerParams } from '@/tests/domain/mocks'
 
 let ruralProducerTable: Knex
 
 const makeSut = (): RuralProducerPostgresRepository => {
   return new RuralProducerPostgresRepository()
 }
-
-const mockParams = (): AddRuralProducerRepository.Params => ({
-  cpfCnpj: '852.415.280-08',
-  name: faker.person.fullName()
-})
 
 describe('RuralProducer Postgres Repository', () => {
   beforeAll(() => {
@@ -32,7 +26,7 @@ describe('RuralProducer Postgres Repository', () => {
   describe('add', () => {
     test('Deve adicionar um produtor rural em caso de sucesso', async () => {
       const sut = makeSut()
-      const params = mockParams()
+      const params = mockAddRuralProducerParams()
       const newRuralProducerId = await sut.add(params)
       const newRuralProducerId2 = await sut.add(params)
       const newRuralProducerId3 = await sut.add(params)
