@@ -1,24 +1,13 @@
 import type { Knex } from 'knex'
-import { faker } from '@faker-js/faker'
 import { FarmPostgresRepository } from '@/infra/db/postgres'
 import { KnexHelper } from '@/infra/db/postgres/helpers'
-import type { AddFarmRepository } from '@/data/protocols'
+import { mockAddFarmParams } from '@/tests/domain/mocks'
 
 let farmTable: Knex
 
 const makeSut = (): FarmPostgresRepository => {
   return new FarmPostgresRepository()
 }
-
-const mockParams = (): AddFarmRepository.Params => ({
-  ruralProducerId: faker.number.int({ min: 1, max: 100 }),
-  name: faker.company.name(),
-  cityName: faker.location.city(),
-  state: 'MG',
-  totalArea: 300,
-  agriculturalArea: 250,
-  vegetationArea: 50
-})
 
 describe('Farm Postgres Repository', () => {
   beforeAll(() => {
@@ -37,7 +26,7 @@ describe('Farm Postgres Repository', () => {
   describe('add', () => {
     test('Deve adicionar uma fazenda em caso de sucesso', async () => {
       const sut = makeSut()
-      const params = mockParams()
+      const params = mockAddFarmParams()
       const newFarm = await sut.add(params)
       const newFarm2 = await sut.add(params)
       const newFarm3 = await sut.add(params)
