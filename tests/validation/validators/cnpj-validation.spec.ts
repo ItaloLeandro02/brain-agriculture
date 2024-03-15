@@ -2,6 +2,7 @@ import { cnpj } from 'cpf-cnpj-validator'
 import { CnpjValidation } from '@/validation/validators'
 import { InvalidParamError } from '@/presentation/errors'
 import { CnpjValidatorSpy } from '@/tests/validation/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: CnpjValidation
@@ -34,5 +35,12 @@ describe('CNPJ Validation', () => {
     const { sut } = makeSut()
     const error = sut.validate({ cnpj: cnpj.generate() })
     expect(error).toBeFalsy()
+  })
+  test('Deve retornar uma exceção caso CnpjValidator falhe', () => {
+    const { sut, cnpjValidatorSpy } = makeSut()
+    jest.spyOn(cnpjValidatorSpy, 'isValid').mockImplementationOnce(throwError)
+    expect(() => {
+      sut.validate({ cnpj: cnpj.generate() })
+    }).toThrow()
   })
 })
