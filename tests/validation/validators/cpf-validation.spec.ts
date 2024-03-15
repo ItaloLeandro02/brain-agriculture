@@ -1,5 +1,6 @@
 import { generate } from 'gerador-validador-cpf'
 import { CpfValidation } from '@/validation/validators'
+import { InvalidParamError } from '@/presentation/errors'
 import { CpfValidatorSpy } from '@/tests/validation/mocks'
 
 type SutTypes = {
@@ -22,5 +23,11 @@ describe('CPF Validation', () => {
     const cpf = generate()
     sut.validate({ cpf })
     expect(cpfValidatorSpy.cpf).toEqual(cpf)
+  })
+  test('Deve retornar InvalidParamError caso CpfValidator retorne false', () => {
+    const { sut, cpfValidatorSpy } = makeSut()
+    cpfValidatorSpy.cpfIsValid = false
+    const error = sut.validate({ cpf: generate() })
+    expect(error).toEqual(new InvalidParamError('cpf'))
   })
 })
