@@ -1,5 +1,6 @@
 import { cnpj } from 'cpf-cnpj-validator'
 import { CnpjValidation } from '@/validation/validators'
+import { InvalidParamError } from '@/presentation/errors'
 import { CnpjValidatorSpy } from '@/tests/validation/mocks'
 
 type SutTypes = {
@@ -22,5 +23,11 @@ describe('CNPJ Validation', () => {
     const cnpjValue = cnpj.generate()
     sut.validate({ cnpj: cnpjValue })
     expect(cnpjValidatorSpy.cnpj).toEqual(cnpjValue)
+  })
+  test('Deve retornar InvalidParamError caso CnpjValidator retorne false', () => {
+    const { sut, cnpjValidatorSpy } = makeSut()
+    cnpjValidatorSpy.isCnpjValid = false
+    const error = sut.validate({ cnpj: cnpj.generate() })
+    expect(error).toEqual(new InvalidParamError('cnpj'))
   })
 })
