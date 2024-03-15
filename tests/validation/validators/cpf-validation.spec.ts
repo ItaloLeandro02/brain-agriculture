@@ -1,4 +1,4 @@
-import { generate } from 'gerador-validador-cpf'
+import { cpf } from 'cpf-cnpj-validator'
 import { CpfValidation } from '@/validation/validators'
 import { InvalidParamError } from '@/presentation/errors'
 import { CpfValidatorSpy } from '@/tests/validation/mocks'
@@ -21,26 +21,26 @@ const makeSut = (): SutTypes => {
 describe('CPF Validation', () => {
   test('Deve chamar CpfValidator com o cpf correto', () => {
     const { sut, cpfValidatorSpy } = makeSut()
-    const cpf = generate()
-    sut.validate({ cpf })
-    expect(cpfValidatorSpy.cpf).toEqual(cpf)
+    const cpfValue = cpf.generate()
+    sut.validate({ cpf: cpfValue })
+    expect(cpfValidatorSpy.cpf).toEqual(cpfValue)
   })
   test('Deve retornar InvalidParamError caso CpfValidator retorne false', () => {
     const { sut, cpfValidatorSpy } = makeSut()
     cpfValidatorSpy.isCpfValid = false
-    const error = sut.validate({ cpf: generate() })
+    const error = sut.validate({ cpf: cpf.generate() })
     expect(error).toEqual(new InvalidParamError('cpf'))
   })
   test('Não deve retornar um error caso CpfValidator retorne true', () => {
     const { sut } = makeSut()
-    const error = sut.validate({ cpf: generate() })
+    const error = sut.validate({ cpf: cpf.generate() })
     expect(error).toBeFalsy()
   })
   test('Deve retornar uma exceção caso CpfValidator falhe', () => {
     const { sut, cpfValidatorSpy } = makeSut()
     jest.spyOn(cpfValidatorSpy, 'isValid').mockImplementationOnce(throwError)
     expect(() => {
-      sut.validate({ cpf: generate() })
+      sut.validate({ cpf: cpf.generate() })
     }).toThrow()
   })
 })
