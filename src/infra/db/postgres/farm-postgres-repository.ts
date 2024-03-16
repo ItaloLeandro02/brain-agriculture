@@ -3,8 +3,7 @@ import type { AddFarmRepository } from '@/data/protocols'
 
 export class FarmPostgresRepository implements AddFarmRepository {
   async add (params: AddFarmRepository.Params): Promise<number> {
-    const ruralProducerTable = KnexHelper.getInstance('farm')
-    const [result] = await ruralProducerTable
+    const [result] = await KnexHelper.client
       .insert({
         rural_producer_id: params.ruralProducerId,
         name: params.name,
@@ -14,6 +13,7 @@ export class FarmPostgresRepository implements AddFarmRepository {
         agricultural_area: params.agriculturalArea,
         vegetation_area: params.vegetationArea
       })
+      .into('farm')
       .returning('id')
     return result.id
   }

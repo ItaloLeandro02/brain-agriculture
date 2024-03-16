@@ -1,9 +1,6 @@
-import type { Knex } from 'knex'
 import { RuralProducerPostgresRepository } from '@/infra/db/postgres'
 import { KnexHelper } from '@/infra/db/postgres/helpers'
 import { mockAddRuralProducerParams } from '@/tests/domain/mocks'
-
-let ruralProducerTable: Knex
 
 const makeSut = (): RuralProducerPostgresRepository => {
   return new RuralProducerPostgresRepository()
@@ -19,8 +16,7 @@ describe('RuralProducer Postgres Repository', () => {
   })
 
   beforeEach(async () => {
-    ruralProducerTable = KnexHelper.getInstance('rural_producer')
-    await ruralProducerTable.delete()
+    await KnexHelper.client.delete().from('rural_producer')
   })
 
   describe('add', () => {

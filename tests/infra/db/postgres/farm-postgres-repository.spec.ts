@@ -1,9 +1,6 @@
-import type { Knex } from 'knex'
 import { FarmPostgresRepository } from '@/infra/db/postgres'
 import { KnexHelper } from '@/infra/db/postgres/helpers'
 import { mockAddFarmParams } from '@/tests/domain/mocks'
-
-let farmTable: Knex
 
 const makeSut = (): FarmPostgresRepository => {
   return new FarmPostgresRepository()
@@ -19,8 +16,7 @@ describe('Farm Postgres Repository', () => {
   })
 
   beforeEach(async () => {
-    farmTable = KnexHelper.getInstance('farm')
-    await farmTable.delete()
+    await KnexHelper.client.delete().from(('farm'))
   })
 
   describe('add', () => {

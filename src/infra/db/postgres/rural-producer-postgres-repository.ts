@@ -3,12 +3,12 @@ import type { AddRuralProducerRepository } from '@/data/protocols'
 
 export class RuralProducerPostgresRepository implements AddRuralProducerRepository {
   async add (params: AddRuralProducerRepository.Params): Promise<number> {
-    const ruralProducerTable = KnexHelper.getInstance('rural_producer')
-    const [result] = await ruralProducerTable
+    const [result] = await KnexHelper.client
       .insert({
         name: params.name,
         cpf_cnpj: params.cpfCnpj
       })
+      .into('rural_producer')
       .returning('id')
     return result.id
   }

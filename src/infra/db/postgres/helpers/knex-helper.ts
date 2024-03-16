@@ -21,10 +21,6 @@ export const KnexHelper = {
     })
   },
 
-  getInstance (table: string): Knex {
-    return this.client(table)
-  },
-
   async disconnect (): Promise<void> {
     await this.client.destroy()
   }
