@@ -16,3 +16,10 @@ create table brain_agriculture.farm (
 	agricultural_area			numeric(5, 2) not null,
 	vegetation_area				numeric(5, 2) not null
 );
+
+create table brain_agriculture.planted_crop (
+  id         	serial primary key,
+	farm_id			serial not null,
+  name       	varchar(30) not null
+);
+
