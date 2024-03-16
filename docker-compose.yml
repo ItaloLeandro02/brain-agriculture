@@ -1,0 +1,31 @@
+version: "3"
+services:
+  db:
+    container_name: db-container
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=12345
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "5432:5432"
+  api:
+    container_name: api-container
+    image: node
+    working_dir: /usr/src/api
+    restart: always
+    command: bash -c "npm install --omit=dev && npm start"
+    depends_on:
+      - db
+    environment:
+      - PORT=5050
+      - POSTGRES_URL=postgres://postgres:12345@db/brain_agriculture
+    volumes:
+      - ./dist/:/usr/src/api/dist/
+      - ./package.json:/usr/src/api/package.json
+      - ./.env:/usr/src/api/.env
+    ports:
+      - "5050:5050"
+    links:
+      - db

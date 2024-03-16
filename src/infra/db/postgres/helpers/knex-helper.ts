@@ -1,5 +1,6 @@
 import knex from 'knex'
 import type { Knex } from 'knex'
+import { env } from '@/main/config'
 
 export const KnexHelper = {
   client: null as Knex,
@@ -7,18 +8,13 @@ export const KnexHelper = {
   async connect (): Promise<void> {
     this.client = knex({
       client: 'pg',
-      connection: {
-        host: 'localhost',
-        port: 5555,
-        user: '',
-        password: '',
-        database: 'postgres'
-      },
-      searchPath: ['brain_agriculture'],
+      connection: env.postgresUrl,
       pool: {
-        min: 2
+        min: 0,
+        max: 6
       }
     })
+    await this.client.raw('SELECT 1')
   },
 
   async disconnect (): Promise<void> {
