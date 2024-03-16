@@ -1,10 +1,14 @@
 import type { Validation } from '@/presentation/protocols'
-import { MissinParamError } from '@/presentation/errors'
 
 export class ValidationComposite implements Validation {
   constructor (private readonly validations: Validation[]) {}
 
   validate (input: any): Error {
-    return new MissinParamError('field')
+    for (const validation of this.validations) {
+      const error = validation.validate(input)
+      if (error) {
+        return error
+      }
+    }
   }
 }
