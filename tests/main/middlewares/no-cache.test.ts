@@ -7,7 +7,7 @@ let app: Express
 
 describe('No Cache Middleware', () => {
   beforeAll(async () => {
-    app = setupApp()
+    app = await setupApp()
   })
 
   test('Deve desabilitar cache', async () => {

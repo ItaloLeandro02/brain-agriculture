@@ -5,8 +5,8 @@ import { setupApp } from '@/main/config'
 let app: Express
 
 describe('Body Parser Middleware', () => {
-  beforeAll(() => {
-    app = setupApp()
+  beforeAll(async () => {
+    app = await setupApp()
   })
 
   test('Deve realizar o parse do body para json', async () => {
