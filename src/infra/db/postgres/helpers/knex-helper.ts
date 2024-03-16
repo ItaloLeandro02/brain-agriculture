@@ -4,7 +4,7 @@ import type { Knex } from 'knex'
 export const KnexHelper = {
   client: null as Knex,
 
-  connect (): void {
+  async connect (): Promise<void> {
     this.client = knex({
       client: 'pg',
       connection: {
