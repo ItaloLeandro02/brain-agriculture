@@ -1,5 +1,6 @@
 export * from './cnpj-validation'
 export * from './cpf-validation'
 export * from './required-field-validation'
+export * from './state-validation'
 export * from './total-area-validation'
 export * from './validation-composite'
