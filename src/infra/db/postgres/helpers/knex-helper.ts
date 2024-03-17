@@ -12,7 +12,8 @@ export const KnexHelper = {
       pool: {
         min: 0,
         max: 6
-      }
+      },
+      searchPath: ['brain_agriculture']
     })
     await this.client.raw('SELECT 1')
   },
