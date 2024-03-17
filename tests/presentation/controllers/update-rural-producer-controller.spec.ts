@@ -2,22 +2,25 @@ import { faker } from '@faker-js/faker'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { UpdateRuralProducerController } from '@/presentation/controllers'
 import { badRequest } from '@/presentation/helpers'
-import { UpdateRuralProducerSpy } from '@/tests/domain/mocks'
+import { UpdateFarmSpy, UpdateRuralProducerSpy } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: UpdateRuralProducerController
   validationSpy: ValidationSpy
   updateRuralProducerSpy: UpdateRuralProducerSpy
+  updateFarmSpy: UpdateFarmSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const updateRuralProducerSpy = new UpdateRuralProducerSpy()
-  const sut = new UpdateRuralProducerController(validationSpy, updateRuralProducerSpy)
+  const updateFarmSpy = new UpdateFarmSpy()
+  const sut = new UpdateRuralProducerController(validationSpy, updateRuralProducerSpy, updateFarmSpy)
   return {
     sut,
     validationSpy,
-    updateRuralProducerSpy
+    updateRuralProducerSpy,
+    updateFarmSpy
   }
 }
 
@@ -56,6 +59,20 @@ describe('UpdateRuralProducer Controller', () => {
       id: request.id,
       cpfCnpj: request.cpfCnpj,
       name: request.name
+    })
+  })
+  test('Deve chamar UpdateFarm com os valores corretos', async () => {
+    const { sut, updateFarmSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(updateFarmSpy.params).toEqual({
+      ruralProducerId: request.id,
+      name: request.farmName,
+      cityName: request.cityName,
+      state: request.state,
+      totalArea: request.totalArea,
+      agriculturalArea: request.agriculturalArea,
+      vegetationArea: request.vegetationArea
     })
   })
 })

@@ -3,4 +3,5 @@ export * from './mock-planted-crops'
 export * from './mock-rural-producer'
 export * from './test-helper'
 
+export * from './update-farm-spy'
 export * from './update-rural-producer-spy'
