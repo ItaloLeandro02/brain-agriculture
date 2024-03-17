@@ -2,10 +2,11 @@ import request from 'supertest'
 import type { Express } from 'express'
 import { setupApp } from '@/main/config'
 import { KnexHelper } from '@/infra/db/postgres/helpers'
+import { mockAddRuralProducerParams, mockAddFarmParams, mockAddPlantedCropsParams } from '@/tests/domain/mocks'
 
 let app: Express
 
-describe('RuralProcuer Routes', () => {
+describe('RuralProducer Routes', () => {
   beforeAll(async () => {
     app = await setupApp()
     await KnexHelper.connect()
@@ -22,8 +23,17 @@ describe('RuralProcuer Routes', () => {
   })
 
   test('Deve retornar 204 em caso de sucesso', async () => {
+    const { ruralProducerId, name: farmName, ...farmParams } = mockAddFarmParams()
+    const { plantedCrops } = mockAddPlantedCropsParams()
+    const params = {
+      ...mockAddRuralProducerParams(),
+      ...farmParams,
+      farmName,
+      plantedCrops
+    }
     await request(app)
       .post('/api/rural-producer')
-      .expect(200)
+      .send(params)
+      .expect(204)
   })
 })
