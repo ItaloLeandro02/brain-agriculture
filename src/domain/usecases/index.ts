@@ -1,4 +1,5 @@
 export * from './add-farm'
 export * from './add-planted-crops'
 export * from './add-rural-producer'
+export * from './update-farm'
 export * from './update-rural-producer'
