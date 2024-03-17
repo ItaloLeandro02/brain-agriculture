@@ -1,5 +1,4 @@
-export * from './cnpj-validation'
-export * from './cpf-validation'
+export * from './cpf-cnpj-validation'
 export * from './required-field-validation'
 export * from './state-validation'
 export * from './total-area-validation'
