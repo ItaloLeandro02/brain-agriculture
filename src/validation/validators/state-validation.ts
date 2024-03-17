@@ -8,7 +8,7 @@ export class StateValidation implements Validation {
   ) {}
 
   validate (input: any): Error {
-    const regex = /^[a-zA-Z]*$/
+    const regex = /^[a-zA-Z]+$/
     const hasOnlyLetters = input[this.fieldName].match(regex)
     const isOverSize = input[this.fieldName].length !== this.length
     if (!hasOnlyLetters || isOverSize) {
