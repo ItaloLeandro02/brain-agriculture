@@ -2,7 +2,7 @@ import type { CnpjValidator, CpfValidator } from '@/validation/protocols'
 import type { Validation } from '@/presentation/protocols'
 import { InvalidParamError } from '@/presentation/errors'
 
-export class CpfValidation implements Validation {
+export class CpfCnpjValidation implements Validation {
   constructor (
     private readonly fieldName: string,
     private readonly cpfValidator: CpfValidator,

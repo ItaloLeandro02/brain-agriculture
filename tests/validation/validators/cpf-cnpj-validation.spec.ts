@@ -1,11 +1,11 @@
 import { cpf as cpfValidator, cnpj as cnpjValidator } from 'cpf-cnpj-validator'
-import { CpfValidation } from '@/validation/validators'
+import { CpfCnpjValidation } from '@/validation/validators'
 import { InvalidParamError } from '@/presentation/errors'
 import { CnpjValidatorSpy, CpfValidatorSpy } from '@/tests/validation/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
-  sut: CpfValidation
+  sut: CpfCnpjValidation
   cpfValidatorSpy: CpfValidatorSpy
   cnpjValidatorSpy: CnpjValidatorSpy
 }
@@ -13,7 +13,7 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const cpfValidatorSpy = new CpfValidatorSpy()
   const cnpjValidatorSpy = new CnpjValidatorSpy()
-  const sut = new CpfValidation('cpfCnpj', cpfValidatorSpy, cnpjValidatorSpy)
+  const sut = new CpfCnpjValidation('cpfCnpj', cpfValidatorSpy, cnpjValidatorSpy)
   return {
     sut,
     cpfValidatorSpy,
