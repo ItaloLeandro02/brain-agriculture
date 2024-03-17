@@ -2,18 +2,22 @@ import { faker } from '@faker-js/faker'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { UpdateRuralProducerController } from '@/presentation/controllers'
 import { badRequest } from '@/presentation/helpers'
+import { UpdateRuralProducerSpy } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: UpdateRuralProducerController
   validationSpy: ValidationSpy
+  updateRuralProducerSpy: UpdateRuralProducerSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const sut = new UpdateRuralProducerController(validationSpy)
+  const updateRuralProducerSpy = new UpdateRuralProducerSpy()
+  const sut = new UpdateRuralProducerController(validationSpy, updateRuralProducerSpy)
   return {
     sut,
-    validationSpy
+    validationSpy,
+    updateRuralProducerSpy
   }
 }
 
@@ -43,5 +47,15 @@ describe('UpdateRuralProducer Controller', () => {
     const request = mockRequest()
     const response = await sut.handle(request)
     expect(response).toEqual(badRequest(new Error()))
+  })
+  test('Deve chamar UpdateRuralProducer com os valores corretos', async () => {
+    const { sut, updateRuralProducerSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(updateRuralProducerSpy.params).toEqual({
+      id: request.id,
+      cpfCnpj: request.cpfCnpj,
+      name: request.name
+    })
   })
 })
