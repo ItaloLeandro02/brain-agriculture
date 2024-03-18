@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import type { AddRuralProducerRepository, LoadRuralProducerByIdRepository, UpdateRuralProducerRepository } from '@/data/protocols'
+import type { AddRuralProducerRepository, DeleteRuralProducerRepository, LoadRuralProducerByIdRepository, UpdateRuralProducerRepository } from '@/data/protocols'
 
 export class AddRuralProducerRepositorySpy implements AddRuralProducerRepository {
   params: AddRuralProducerRepository.Params
@@ -27,5 +27,14 @@ export class LoadRuralProducerByIdRepositorySpy implements LoadRuralProducerById
   async load (id: number): Promise<boolean> {
     this.id = id
     return await Promise.resolve(this.existsOnDatabase)
+  }
+}
+
+export class DeleteRuralProducerRepositorySpy implements DeleteRuralProducerRepository {
+  id: number
+
+  async delete (id: number): Promise<void> {
+    this.id = id
+    await Promise.resolve()
   }
 }
