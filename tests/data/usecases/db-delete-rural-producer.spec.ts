@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { DbDeleteRuralProducer } from '@/data/usecases'
 import { DeleteRuralProducerRepositorySpy } from '@/tests/data/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbDeleteRuralProducer
@@ -22,5 +23,11 @@ describe('DbDeleteRuralProducer UserCase', () => {
     const ruralProducerId = faker.number.int({ min: 1, max: 100 })
     await sut.delete(ruralProducerId)
     expect(deleteRuralProducerRepositorySpy.id).toBe(ruralProducerId)
+  })
+  test('Deve lançar uma exceção caso DeleteRuralProducerRepository lance uma exceção', async () => {
+    const { sut, deleteRuralProducerRepositorySpy } = makeSut()
+    jest.spyOn(deleteRuralProducerRepositorySpy, 'delete').mockImplementationOnce(throwError)
+    const promise = sut.delete(faker.number.int({ min: 1, max: 100 }))
+    await expect(promise).rejects.toThrow()
   })
 })
