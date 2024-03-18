@@ -1,6 +1,8 @@
 import { faker } from '@faker-js/faker'
 import { DeleteRuralProducerController } from '@/presentation/controllers'
+import { serverError } from '@/presentation/helpers'
 import { LoadRuralProducerByIdRepositorySpy } from '@/tests/data/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DeleteRuralProducerController
@@ -26,5 +28,11 @@ describe('DeleteRuralProducer Controller', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(loadRuralProducerByIdSpy.id).toBe(request.id)
+  })
+  test('Deve retornar 500 caso LoadRuralProducerById lance uma exceção', async () => {
+    const { sut, loadRuralProducerByIdSpy } = makeSut()
+    jest.spyOn(loadRuralProducerByIdSpy, 'load').mockImplementationOnce(throwError)
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
   })
 })
