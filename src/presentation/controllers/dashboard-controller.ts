@@ -1,5 +1,5 @@
 import type { Controller, HttpResponse } from '@/presentation/protocols'
-import { serverError } from '@/presentation/helpers'
+import { ok, serverError } from '@/presentation/helpers'
 import type { LoadDashboard } from '@/domain/usecases'
 
 export class DashboardController implements Controller {
@@ -7,8 +7,8 @@ export class DashboardController implements Controller {
 
   async handle (): Promise<HttpResponse> {
     try {
-      await this.loadDashboard.load()
-      return null
+      const data = await this.loadDashboard.load()
+      return ok(data)
     } catch (error) {
       return serverError(error as Error)
     }

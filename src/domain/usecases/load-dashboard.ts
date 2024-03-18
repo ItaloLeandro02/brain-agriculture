@@ -19,7 +19,7 @@ export namespace LoadDashboard {
     percent: number
   }
   export type PieChartLandUse = {
-    ruralProducerName: string
+    farmName: string
     percent: number
   }
 }
