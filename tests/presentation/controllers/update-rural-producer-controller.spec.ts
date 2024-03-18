@@ -108,6 +108,12 @@ describe('UpdateRuralProducer Controller', () => {
       plantedCrops: request.plantedCrops
     })
   })
+  test('Deve retornar 500 caso LoadRuralProducerById lance uma exceção', async () => {
+    const { sut, loadRuralProducerByIdSpy } = makeSut()
+    jest.spyOn(loadRuralProducerByIdSpy, 'load').mockImplementationOnce(throwError)
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
+  })
   test('Deve retornar 500 caso UpdateRuralProducer lance uma exceção', async () => {
     const { sut, updateRuralProducerSpy } = makeSut()
     jest.spyOn(updateRuralProducerSpy, 'update').mockImplementationOnce(throwError)
