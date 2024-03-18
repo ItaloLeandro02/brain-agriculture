@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { DeleteRuralProducerController } from '@/presentation/controllers'
-import { notFound, serverError } from '@/presentation/helpers'
+import { noContent, notFound, serverError } from '@/presentation/helpers'
 import type { DeleteFarm, DeletePlantedCrops, DeleteRuralProducer } from '@/domain/usecases'
 import { LoadRuralProducerByIdRepositorySpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
@@ -114,5 +114,10 @@ describe('DeleteRuralProducer Controller', () => {
     loadRuralProducerByIdSpy.existsOnDatabase = false
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(notFound())
+  })
+  test('Deve retornar 204 em caso de sucesso', async () => {
+    const { sut } = makeSut()
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(noContent())
   })
 })
