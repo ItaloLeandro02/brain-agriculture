@@ -1,6 +1,7 @@
 export * from './add-farm'
 export * from './add-planted-crops'
 export * from './add-rural-producer'
+export * from './delete-farm'
 export * from './delete-rural-producer'
 export * from './load-rural-producer-by-id'
 export * from './update-farm'
