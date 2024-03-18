@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import type { AddFarm } from '@/domain/usecases'
+import type { AddFarm, UpdateFarm } from '@/domain/usecases'
 
 export const mockAddFarmParams = (): AddFarm.Params => ({
   ruralProducerId: faker.number.int({ min: 1, max: 100 }),
@@ -10,3 +10,5 @@ export const mockAddFarmParams = (): AddFarm.Params => ({
   agriculturalArea: 250,
   vegetationArea: 50
 })
+
+export const mockUpdateFarmParams = (): UpdateFarm.Params => mockAddFarmParams()
