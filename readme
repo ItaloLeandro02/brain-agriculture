@@ -1,0 +1,40 @@
+# Brain Agriculture
+
+Olá, esta api tem como objetivo gerenciar produtores rurais e expor uma rota para que sejam criados dashboards.
+
+
+## Passos Iniciais
+
+Realize o clone desse repositório
+
+    git clone git@github.com:ItaloLeandro02/brain-agriculture.git
+
+ Realize a instalação das dependências
+
+
+    npm i
+
+ Crie um arquivo .env
+
+
+    echo "PORT=5050" >> .env
+    echo "POSTGRES_URL=postgres://postgres:12345@localhost" >> .env
+    echo "POSTGRES_URL_TEST=postgres://postgres@localhost:5555" >> .env
+
+Rode o comando para buildar e subir à aplicação por meio do docker
+
+    npm run up
+
+## Executando Testes
+
+Geral com coverage
+
+    npm run test:ci
+
+Testes unitários
+
+    npm run test:unit
+
+Testes de integração
+
+    npm run test:integration
