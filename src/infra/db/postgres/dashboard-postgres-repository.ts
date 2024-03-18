@@ -19,7 +19,7 @@ export class DashboardPostgresRepository implements LoadDashboardRepository {
       pieChartState: this.getPieChartState(farmData, totalFarms),
       pieChartPlantedCrop: this.getPieChartPlantedCrop(plantedCropData),
       pieChartAgriculturalAreaLandUse: this.getPieChartLandUse(farmData, 'agricultural_area'),
-      pieChartVegerationAreaLandUse: this.getPieChartLandUse(farmData, 'vegetation_area')
+      pieChartVegetationAreaLandUse: this.getPieChartLandUse(farmData, 'vegetation_area')
     }
   }
 

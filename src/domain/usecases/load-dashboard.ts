@@ -9,7 +9,7 @@ export namespace LoadDashboard {
     pieChartState: PieChartState[]
     pieChartPlantedCrop: PieChartPlantedCrop[]
     pieChartAgriculturalAreaLandUse: PieChartLandUse[]
-    pieChartVegerationAreaLandUse: PieChartLandUse[]
+    pieChartVegetationAreaLandUse: PieChartLandUse[]
   }
   export type PieChartState = {
     state: string

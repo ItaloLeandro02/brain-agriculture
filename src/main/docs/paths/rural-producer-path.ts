@@ -1,4 +1,4 @@
-export const ruralProducerPath = {
+export const addRuralProducerPath = {
   post: {
     tags: ['Produtor Rural'],
     summary: 'API para criar um produtor rural',
@@ -25,7 +25,10 @@ export const ruralProducerPath = {
         $ref: '#/components/serverError'
       }
     }
-  },
+  }
+}
+
+export const updateOrDeleteRuralProducerPath = {
   put: {
     tags: ['Produtor Rural'],
     summary: 'API para editar um produtor rural',

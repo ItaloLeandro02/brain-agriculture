@@ -52,7 +52,7 @@ describe('Dashboard Controller', () => {
         name: 'Soja',
         percent: 35
       }],
-      pieChartVegerationAreaLandUse: [{
+      pieChartVegetationAreaLandUse: [{
         farmName: 'Fazendinha Feliz',
         percent: 60
       }, {

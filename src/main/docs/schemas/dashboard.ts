@@ -25,7 +25,7 @@ export const dashboardSchema = {
         $ref: '#/schemas/pieChartLandUse'
       }
     },
-    pieChartVegerationAreaLandUse: {
+    pieChartVegetationAreaLandUse: {
       type: 'array',
       items: {
         $ref: '#/schemas/pieChartLandUse'

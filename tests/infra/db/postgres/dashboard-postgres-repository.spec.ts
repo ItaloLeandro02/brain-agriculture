@@ -218,7 +218,7 @@ describe('Dashboard Postgres Repository', () => {
           farmName: 'Fazenda Alcalina',
           percent: 41.50
         }],
-        pieChartVegerationAreaLandUse: [{
+        pieChartVegetationAreaLandUse: [{
           farmName: 'Fazendinha feliz',
           percent: 12.93
         }, {
@@ -242,7 +242,7 @@ describe('Dashboard Postgres Repository', () => {
         pieChartState: [],
         pieChartPlantedCrop: [],
         pieChartAgriculturalAreaLandUse: [],
-        pieChartVegerationAreaLandUse: []
+        pieChartVegetationAreaLandUse: []
       })
     })
   })
