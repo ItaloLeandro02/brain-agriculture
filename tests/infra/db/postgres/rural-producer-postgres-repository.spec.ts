@@ -32,6 +32,16 @@ describe('RuralProducer Postgres Repository', () => {
     })
   })
 
+  describe('loadById', () => {
+    test('Deve retornar se um produtor rural existe no banco de dados', async () => {
+      const sut = makeSut()
+      const addParams = mockAddRuralProducerParams()
+      const newRuralProducerId = await sut.add(addParams)
+      const exists = await sut.load(newRuralProducerId)
+      expect(exists).toBe(true)
+    })
+  })
+
   describe('update', () => {
     test('Deve atualizar um produtor rural em caso de sucesso', async () => {
       const sut = makeSut()
