@@ -1,5 +1,5 @@
 import type { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, noContent, serverError } from '@/presentation/helpers'
+import { badRequest, noContent, notFound, serverError } from '@/presentation/helpers'
 import type { LoadRuralProducerById, UpdateFarm, UpdatePlantedCrops, UpdateRuralProducer } from '@/domain/usecases'
 
 export class UpdateRuralProducerController implements Controller {
@@ -18,7 +18,10 @@ export class UpdateRuralProducerController implements Controller {
         return badRequest(error)
       }
       const { id, cpfCnpj, name, farmName, cityName, state, totalArea, agriculturalArea, vegetationArea, plantedCrops } = request
-      await this.loadRuralProducerById.load(id)
+      const existsOnDatabase = await this.loadRuralProducerById.load(id)
+      if (!existsOnDatabase) {
+        return notFound()
+      }
       await this.updateRuralProducer.update({ id, cpfCnpj, name })
       const farmId = await this.updateFarm.update({
         ruralProducerId: id,
