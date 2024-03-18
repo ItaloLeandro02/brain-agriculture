@@ -103,6 +103,12 @@ describe('DeleteRuralProducer Controller', () => {
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(serverError(new Error()))
   })
+  test('Deve retornar 500 caso DeletePlantedCrop lance uma exceção', async () => {
+    const { sut, deletePlantedCropsSpy } = makeSut()
+    jest.spyOn(deletePlantedCropsSpy, 'delete').mockImplementationOnce(throwError)
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
+  })
   test('Deve retornar 404 caso LoadRuralProducerById retorne false', async () => {
     const { sut, loadRuralProducerByIdSpy } = makeSut()
     loadRuralProducerByIdSpy.existsOnDatabase = false
