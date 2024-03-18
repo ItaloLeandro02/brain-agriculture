@@ -1,5 +1,6 @@
 import { DbLoadDashboard } from '@/data/usecases'
 import { LoadDashboardRepositorySpy } from '@/tests/data/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DbLoadDashboard
@@ -20,5 +21,11 @@ describe('DbLoadDashboard UseCase', () => {
     const { sut, loadDashboardRepositorySpy } = makeSut()
     await sut.load()
     expect(loadDashboardRepositorySpy.callsCount).toBe(1)
+  })
+  test('Deve lançar uma exceção caso LoadDashboardRepository falhe', async () => {
+    const { sut, loadDashboardRepositorySpy } = makeSut()
+    jest.spyOn(loadDashboardRepositorySpy, 'load').mockImplementationOnce(throwError)
+    const promise = sut.load()
+    await expect(promise).rejects.toThrow()
   })
 })
