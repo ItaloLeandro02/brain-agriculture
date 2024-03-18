@@ -1,7 +1,7 @@
 import { KnexHelper } from '@/infra/db/postgres/helpers'
-import type { AddRuralProducerRepository, LoadRuralProducerByIdRepository, UpdateRuralProducerRepository } from '@/data/protocols'
+import type { AddRuralProducerRepository, DeleteRuralProducerRepository, LoadRuralProducerByIdRepository, UpdateRuralProducerRepository } from '@/data/protocols'
 
-export class RuralProducerPostgresRepository implements AddRuralProducerRepository, LoadRuralProducerByIdRepository, UpdateRuralProducerRepository {
+export class RuralProducerPostgresRepository implements AddRuralProducerRepository, LoadRuralProducerByIdRepository, UpdateRuralProducerRepository, DeleteRuralProducerRepository {
   async add (params: AddRuralProducerRepository.Params): Promise<number> {
     const [result] = await KnexHelper.client
       .insert({
@@ -30,5 +30,12 @@ export class RuralProducerPostgresRepository implements AddRuralProducerReposito
       })
       .from('rural_producer')
       .where('id', params.id)
+  }
+
+  async delete (id: number): Promise<void> {
+    await KnexHelper.client
+      .delete()
+      .from('rural_producer')
+      .where('id', id)
   }
 }
