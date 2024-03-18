@@ -15,7 +15,7 @@ services:
     image: node:20
     working_dir: /usr/src/api
     restart: always
-    command: bash -c "npm install --omit=dev && npm start"
+    command: bash -c "npm install --omit=dev && npm run migrate:latest && npm start"
     depends_on:
       - db
     environment:
@@ -23,7 +23,9 @@ services:
       - POSTGRES_URL=postgres://postgres:12345@db
     volumes:
       - ./dist/:/usr/src/api/dist/
+      - ./migrations/:/usr/src/api/migrations/
       - ./package.json:/usr/src/api/package.json
+      - ./knexfile.js:/usr/src/api/knexfile.js
       - ./.env:/usr/src/api/.env
     ports:
       - "5050:5050"
