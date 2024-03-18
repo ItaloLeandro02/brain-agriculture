@@ -5,3 +5,5 @@ export const mockAddPlantedCropsParams = (): AddPlantedCrops.Params => ({
   farmId: faker.number.int({ min: 1, max: 100 }),
   plantedCrops: ['Cana de açucar', 'Soja']
 })
+
+export const mockUpdatePlantedCropsParams = (): AddPlantedCrops.Params => mockAddPlantedCropsParams()
