@@ -7,7 +7,7 @@ export const mockAddRuralProducerParams = (): AddRuralProducer.Params => ({
   name: faker.person.fullName()
 })
 
-export const mockUpdateRuralProducerParams = (ruralProducerId: number): UpdateRuralProducer.Params => ({
+export const mockUpdateRuralProducerParams = (ruralProducerId = faker.number.int({ min: 1, max: 100 })): UpdateRuralProducer.Params => ({
   id: ruralProducerId,
   cpfCnpj: cnpjValidator.generate(),
   name: faker.person.fullName()
