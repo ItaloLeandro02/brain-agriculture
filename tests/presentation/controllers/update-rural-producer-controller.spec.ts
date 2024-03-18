@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { UpdateRuralProducerController } from '@/presentation/controllers'
-import { badRequest } from '@/presentation/helpers'
-import { UpdateFarmSpy, UpdatePlantedCropsSpy, UpdateRuralProducerSpy } from '@/tests/domain/mocks'
+import { badRequest, serverError } from '@/presentation/helpers'
+import { UpdateFarmSpy, UpdatePlantedCropsSpy, UpdateRuralProducerSpy, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: UpdateRuralProducerController
@@ -86,5 +86,11 @@ describe('UpdateRuralProducer Controller', () => {
       farmId: updateFarmSpy.farmId,
       plantedCrops: request.plantedCrops
     })
+  })
+  test('Deve retornar 500 caso UpdateRuralProducer lance uma exceção', async () => {
+    const { sut, updateRuralProducerSpy } = makeSut()
+    jest.spyOn(updateRuralProducerSpy, 'update').mockImplementationOnce(throwError)
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
   })
 })
