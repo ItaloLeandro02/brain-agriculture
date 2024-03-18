@@ -1,5 +1,5 @@
 import type { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, noContent, serverError } from '@/presentation/helpers'
 import type { UpdateFarm, UpdatePlantedCrops, UpdateRuralProducer } from '@/domain/usecases'
 
 export class UpdateRuralProducerController implements Controller {
@@ -28,7 +28,7 @@ export class UpdateRuralProducerController implements Controller {
         vegetationArea
       })
       await this.updatePlantedCrops.update({ farmId, plantedCrops })
-      return await Promise.resolve(null)
+      return noContent()
     } catch (error) {
       return serverError(error as Error)
     }
