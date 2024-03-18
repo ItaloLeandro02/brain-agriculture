@@ -1,5 +1,6 @@
 import request from 'supertest'
 import type { Express } from 'express'
+import { faker } from '@faker-js/faker'
 import { setupApp } from '@/main/config'
 import { KnexHelper } from '@/infra/db/postgres/helpers'
 import { mockAddRuralProducerParams, mockAddFarmParams, mockAddPlantedCropsParams, mockUpdatePlantedCropsParams } from '@/tests/domain/mocks'
@@ -123,6 +124,12 @@ describe('RuralProducer Routes', () => {
       await request(app)
         .delete(`/api/rural-producer/${ruralProducerId}`)
         .expect(204)
+    })
+    test('Deve retornar 400 caso o registro não exista no banco', async () => {
+      const ruralProducerId = faker.number.int({ min: 1, max: 100 })
+      await request(app)
+        .delete(`/api/rural-producer/${ruralProducerId}`)
+        .expect(404)
     })
   })
 })
