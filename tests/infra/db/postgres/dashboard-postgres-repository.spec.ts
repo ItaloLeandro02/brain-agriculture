@@ -159,7 +159,9 @@ describe('Dashboard Postgres Repository', () => {
   })
 
   beforeEach(async () => {
+    await KnexHelper.client.delete().from('planted_crop')
     await KnexHelper.client.delete().from('farm')
+    await KnexHelper.client.delete().from('rural_producer')
   })
 
   describe('load', () => {
@@ -229,6 +231,18 @@ describe('Dashboard Postgres Repository', () => {
           farmName: 'Fazenda Alcalina',
           percent: 21.55
         }]
+      })
+    })
+    test('Deve retornar os dados do dashboard caso não tenha nenhum registro no banco de dados', async () => {
+      const sut = makeSut()
+      const data = await sut.load()
+      expect(data).toEqual({
+        totalFarms: 0,
+        totalAreaFarms: 0,
+        pieChartState: [],
+        pieChartPlantedCrop: [],
+        pieChartAgriculturalAreaLandUse: [],
+        pieChartVegerationAreaLandUse: []
       })
     })
   })
