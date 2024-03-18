@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { DeleteRuralProducerController } from '@/presentation/controllers'
 import { notFound, serverError } from '@/presentation/helpers'
-import type { DeleteFarm, DeleteRuralProducer } from '@/domain/usecases'
+import type { DeleteFarm, DeletePlantedCrops, DeleteRuralProducer } from '@/domain/usecases'
 import { LoadRuralProducerByIdRepositorySpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
@@ -10,18 +10,21 @@ type SutTypes = {
   loadRuralProducerByIdSpy: LoadRuralProducerByIdRepositorySpy
   deleteRuralProducerSpy: DeleteRuralProducerSpy
   deleteFarmSpy: DeleteFarmSpy
+  deletePlantedCropsSpy: DeletePlantedCropsSpy
 }
 
 const makeSut = (): SutTypes => {
   const loadRuralProducerByIdSpy = new LoadRuralProducerByIdRepositorySpy()
   const deleteRuralProducerSpy = new DeleteRuralProducerSpy()
   const deleteFarmSpy = new DeleteFarmSpy()
-  const sut = new DeleteRuralProducerController(loadRuralProducerByIdSpy, deleteRuralProducerSpy, deleteFarmSpy)
+  const deletePlantedCropsSpy = new DeletePlantedCropsSpy()
+  const sut = new DeleteRuralProducerController(loadRuralProducerByIdSpy, deleteRuralProducerSpy, deleteFarmSpy, deletePlantedCropsSpy)
   return {
     sut,
     loadRuralProducerByIdSpy,
     deleteRuralProducerSpy,
-    deleteFarmSpy
+    deleteFarmSpy,
+    deletePlantedCropsSpy
   }
 }
 
@@ -48,6 +51,15 @@ export class DeleteFarmSpy implements DeleteFarm {
   }
 }
 
+export class DeletePlantedCropsSpy implements DeletePlantedCrops {
+  farmId: number
+
+  async delete (farmId: number): Promise<void> {
+    this.farmId = farmId
+    await Promise.resolve()
+  }
+}
+
 describe('DeleteRuralProducer Controller', () => {
   test('Deve chamar LoadRuralProducerById com os valores corretos', async () => {
     const { sut, loadRuralProducerByIdSpy } = makeSut()
@@ -66,6 +78,12 @@ describe('DeleteRuralProducer Controller', () => {
     const request = mockRequest()
     await sut.handle(request)
     expect(deleteFarmSpy.ruralProducerId).toBe(request.id)
+  })
+  test('Deve chamar DeletePlantedCrop com os valores corretos', async () => {
+    const { sut, deleteFarmSpy, deletePlantedCropsSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(deletePlantedCropsSpy.farmId).toBe(deleteFarmSpy.farmId)
   })
   test('Deve retornar 500 caso LoadRuralProducerById lance uma exceção', async () => {
     const { sut, loadRuralProducerByIdSpy } = makeSut()
