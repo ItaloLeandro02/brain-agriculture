@@ -2,25 +2,28 @@ import { faker } from '@faker-js/faker'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { UpdateRuralProducerController } from '@/presentation/controllers'
 import { badRequest } from '@/presentation/helpers'
-import { UpdateFarmSpy, UpdateRuralProducerSpy } from '@/tests/domain/mocks'
+import { UpdateFarmSpy, UpdatePlantedCropsSpy, UpdateRuralProducerSpy } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: UpdateRuralProducerController
   validationSpy: ValidationSpy
   updateRuralProducerSpy: UpdateRuralProducerSpy
   updateFarmSpy: UpdateFarmSpy
+  updatePlantedCropsSpy: UpdatePlantedCropsSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const updateRuralProducerSpy = new UpdateRuralProducerSpy()
   const updateFarmSpy = new UpdateFarmSpy()
-  const sut = new UpdateRuralProducerController(validationSpy, updateRuralProducerSpy, updateFarmSpy)
+  const updatePlantedCropsSpy = new UpdatePlantedCropsSpy()
+  const sut = new UpdateRuralProducerController(validationSpy, updateRuralProducerSpy, updateFarmSpy, updatePlantedCropsSpy)
   return {
     sut,
     validationSpy,
     updateRuralProducerSpy,
-    updateFarmSpy
+    updateFarmSpy,
+    updatePlantedCropsSpy
   }
 }
 
@@ -73,6 +76,15 @@ describe('UpdateRuralProducer Controller', () => {
       totalArea: request.totalArea,
       agriculturalArea: request.agriculturalArea,
       vegetationArea: request.vegetationArea
+    })
+  })
+  test('Deve chamar UpdatePlantedCrop com os valores corretos', async () => {
+    const { sut, updateFarmSpy, updatePlantedCropsSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(updatePlantedCropsSpy.params).toEqual({
+      farmId: updateFarmSpy.farmId,
+      plantedCrops: request.plantedCrops
     })
   })
 })
