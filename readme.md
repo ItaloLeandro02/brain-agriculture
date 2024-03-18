@@ -25,6 +25,12 @@ Rode o comando para buildar e subir à aplicação por meio do docker
 
     npm run up
 
+## Documentação
+
+Acesse http://localhost:5050/api-docs
+
+> **Obs:** Usar a porta de acordo com o valor informado no .env
+
 ## Executando Testes
 
 > **Obs:** Por conta da biblioteca **@shelf/jest-postgres** pode ser que os testes exibam um erro ao serem executados. Basta rodarem os testes novamente que serão executados com sucesso. Pode ser solicitado a senha root antes da execução dos testes a mesma deve ser informada para que os testes continuem. Caso seja exibida constantemente uma mensagem de erro, basta acessar o arquivo **jest-postgres-config.js** e alterar os parâmetros **includeInstallation** e **debugMode** para true. Todos esses pontos podem ser encontrados na [página da biblioteca](https://github.com/shelfio/jest-postgres)
