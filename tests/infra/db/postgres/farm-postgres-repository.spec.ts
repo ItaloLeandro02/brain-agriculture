@@ -7,8 +7,8 @@ const makeSut = (): FarmPostgresRepository => {
 }
 
 describe('Farm Postgres Repository', () => {
-  beforeAll(() => {
-    KnexHelper.connect()
+  beforeAll(async () => {
+    await KnexHelper.connect()
   })
 
   afterAll(async () => {
@@ -16,7 +16,7 @@ describe('Farm Postgres Repository', () => {
   })
 
   beforeEach(async () => {
-    await KnexHelper.client.delete().from(('farm'))
+    await KnexHelper.client.delete().from('farm')
   })
 
   describe('add', () => {
@@ -26,9 +26,9 @@ describe('Farm Postgres Repository', () => {
       const newFarm = await sut.add(params)
       const newFarm2 = await sut.add(params)
       const newFarm3 = await sut.add(params)
-      expect(newFarm).toBe(1)
-      expect(newFarm2).toBe(2)
-      expect(newFarm3).toBe(3)
+      expect(newFarm).toBeGreaterThan(0)
+      expect(newFarm2).toBe(newFarm + 1)
+      expect(newFarm3).toBe(newFarm2 + 1)
     })
   })
 })

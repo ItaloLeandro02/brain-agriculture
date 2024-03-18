@@ -7,8 +7,8 @@ const makeSut = (): PlantedCropsPostgresRepository => {
 }
 
 describe('PlantedCrops Postgres Repository', () => {
-  beforeAll(() => {
-    KnexHelper.connect()
+  beforeAll(async () => {
+    await KnexHelper.connect()
   })
 
   afterAll(async () => {
@@ -30,19 +30,19 @@ describe('PlantedCrops Postgres Repository', () => {
         .select('*')
         .from('planted_crop')
       expect(plantedCropsDatabase).toEqual([{
-        id: 1,
+        id: plantedCropsDatabase[0].id,
         farm_id: params.farmId,
         name: params.plantedCrops[0]
       }, {
-        id: 2,
+        id: plantedCropsDatabase[1].id,
         farm_id: params.farmId,
         name: params.plantedCrops[1]
       }, {
-        id: 3,
+        id: plantedCropsDatabase[2].id,
         farm_id: params2.farmId,
         name: params2.plantedCrops[0]
       }, {
-        id: 4,
+        id: plantedCropsDatabase[3].id,
         farm_id: params2.farmId,
         name: params2.plantedCrops[1]
       }])

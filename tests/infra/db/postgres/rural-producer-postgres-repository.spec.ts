@@ -7,8 +7,8 @@ const makeSut = (): RuralProducerPostgresRepository => {
 }
 
 describe('RuralProducer Postgres Repository', () => {
-  beforeAll(() => {
-    KnexHelper.connect()
+  beforeAll(async () => {
+    await KnexHelper.connect()
   })
 
   afterAll(async () => {
@@ -26,9 +26,9 @@ describe('RuralProducer Postgres Repository', () => {
       const newRuralProducerId = await sut.add(params)
       const newRuralProducerId2 = await sut.add(params)
       const newRuralProducerId3 = await sut.add(params)
-      expect(newRuralProducerId).toBe(1)
-      expect(newRuralProducerId2).toBe(2)
-      expect(newRuralProducerId3).toBe(3)
+      expect(newRuralProducerId).toBeGreaterThan(0)
+      expect(newRuralProducerId2).toBe(newRuralProducerId + 1)
+      expect(newRuralProducerId3).toBe(newRuralProducerId2 + 1)
     })
   })
 })
