@@ -1,5 +1,5 @@
 import type { Controller, HttpResponse } from '@/presentation/protocols'
-import { notFound, serverError } from '@/presentation/helpers'
+import { noContent, notFound, serverError } from '@/presentation/helpers'
 import type { DeleteFarm, DeletePlantedCrops, DeleteRuralProducer } from '@/domain/usecases'
 import type { LoadRuralProducerByIdRepository } from '@/data/protocols'
 
@@ -20,6 +20,7 @@ export class DeleteRuralProducerController implements Controller {
       await this.deleteRuralProducer.delete(request.id)
       const farmId = await this.deleteFarm.delete(request.id)
       await this.deletePlantedCrops.delete(farmId)
+      return noContent()
     } catch (error) {
       return serverError(error as Error)
     }
