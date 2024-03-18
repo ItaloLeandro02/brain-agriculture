@@ -1,29 +1,19 @@
 import { DashboardController } from '@/presentation/controllers'
 import { ok, serverError } from '@/presentation/helpers'
-import { type LoadDashboard } from '@/domain/usecases'
-import { mockLoadDashboardResult, throwError } from '@/tests/domain/mocks'
+import { throwError } from '@/tests/domain/mocks'
+import { LoadDashboardRepositorySpy } from '@/tests/data/mocks'
 
 type SutTypes = {
   sut: DashboardController
-  loadDashboardSpy: LoadDashboardSpy
+  loadDashboardSpy: LoadDashboardRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
-  const loadDashboardSpy = new LoadDashboardSpy()
+  const loadDashboardSpy = new LoadDashboardRepositorySpy()
   const sut = new DashboardController(loadDashboardSpy)
   return {
     sut,
     loadDashboardSpy
-  }
-}
-
-export class LoadDashboardSpy implements LoadDashboard {
-  callsCount = 0
-  result = mockLoadDashboardResult()
-
-  async load (): Promise<LoadDashboard.Result> {
-    this.callsCount++
-    return await Promise.resolve(this.result)
   }
 }
 
