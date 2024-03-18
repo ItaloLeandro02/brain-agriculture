@@ -1,12 +1,13 @@
 import type { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest } from '@/presentation/helpers'
-import type { UpdateFarm, UpdateRuralProducer } from '@/domain/usecases'
+import type { UpdateFarm, UpdatePlantedCrops, UpdateRuralProducer } from '@/domain/usecases'
 
 export class UpdateRuralProducerController implements Controller {
   constructor (
     private readonly validation: Validation,
     private readonly updateRuralProducer: UpdateRuralProducer,
-    private readonly updateFarm: UpdateFarm
+    private readonly updateFarm: UpdateFarm,
+    private readonly updatePlantedCrops: UpdatePlantedCrops
   ) {}
 
   async handle (request: UpdateRuralProducerController.Request): Promise<HttpResponse> {
@@ -14,9 +15,9 @@ export class UpdateRuralProducerController implements Controller {
     if (error) {
       return badRequest(error)
     }
-    const { id, cpfCnpj, name, farmName, cityName, state, totalArea, agriculturalArea, vegetationArea } = request
+    const { id, cpfCnpj, name, farmName, cityName, state, totalArea, agriculturalArea, vegetationArea, plantedCrops } = request
     await this.updateRuralProducer.update({ id, cpfCnpj, name })
-    await this.updateFarm.update({
+    const farmId = await this.updateFarm.update({
       ruralProducerId: id,
       name: farmName,
       cityName,
@@ -25,6 +26,7 @@ export class UpdateRuralProducerController implements Controller {
       agriculturalArea,
       vegetationArea
     })
+    await this.updatePlantedCrops.update({ farmId, plantedCrops })
     return await Promise.resolve(null)
   }
 }

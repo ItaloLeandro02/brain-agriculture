@@ -1,5 +1,5 @@
 export interface UpdateFarm {
-  update: (params: UpdateFarm.Params) => Promise<void>
+  update: (params: UpdateFarm.Params) => Promise<number>
 }
 
 export namespace UpdateFarm {
