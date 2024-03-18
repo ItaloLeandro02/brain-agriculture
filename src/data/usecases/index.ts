@@ -1,6 +1,7 @@
 export * from './db-add-farm'
 export * from './db-add-planted-crops'
 export * from './db-add-rural-producer'
+export * from './db-delete-farm'
 export * from './db-delete-planted-crops'
 export * from './db-delete-rural-producer'
 export * from './db-load-rural-producer-by-id'
