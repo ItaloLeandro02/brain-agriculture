@@ -1,33 +1,22 @@
 import { faker } from '@faker-js/faker'
 import { UpdateRuralProducerController } from '@/presentation/controllers'
 import { badRequest, noContent, notFound, serverError } from '@/presentation/helpers'
-import type { LoadRuralProducerById } from '@/domain/usecases'
 import { ValidationSpy } from '@/tests/presentation/mocks'
-import { UpdateFarmRepositorySpy, UpdatePlantedCropsRepositorySpy, UpdateRuralProducerRepositorySpy } from '@/tests/data/mocks'
+import { LoadRuralProducerByIdRepositorySpy, UpdateFarmRepositorySpy, UpdatePlantedCropsRepositorySpy, UpdateRuralProducerRepositorySpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: UpdateRuralProducerController
   validationSpy: ValidationSpy
-  loadRuralProducerByIdSpy: LoadRuralProducerByIdSpy
+  loadRuralProducerByIdSpy: LoadRuralProducerByIdRepositorySpy
   updateRuralProducerSpy: UpdateRuralProducerRepositorySpy
   updateFarmSpy: UpdateFarmRepositorySpy
   updatePlantedCropsSpy: UpdatePlantedCropsRepositorySpy
 }
 
-export class LoadRuralProducerByIdSpy implements LoadRuralProducerById {
-  id: number
-  result = true
-
-  async load (id: number): Promise<boolean> {
-    this.id = id
-    return await Promise.resolve(this.result)
-  }
-}
-
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
-  const loadRuralProducerByIdSpy = new LoadRuralProducerByIdSpy()
+  const loadRuralProducerByIdSpy = new LoadRuralProducerByIdRepositorySpy()
   const updateRuralProducerSpy = new UpdateRuralProducerRepositorySpy()
   const updateFarmSpy = new UpdateFarmRepositorySpy()
   const updatePlantedCropsSpy = new UpdatePlantedCropsRepositorySpy()
@@ -134,7 +123,7 @@ describe('UpdateRuralProducer Controller', () => {
   })
   test('Deve retornar 404 caso LoadRuralProducerById retorne false', async () => {
     const { sut, loadRuralProducerByIdSpy } = makeSut()
-    loadRuralProducerByIdSpy.result = false
+    loadRuralProducerByIdSpy.existsOnDatabase = false
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(notFound())
   })
