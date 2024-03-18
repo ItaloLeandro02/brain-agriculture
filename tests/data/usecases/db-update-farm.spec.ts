@@ -23,4 +23,9 @@ describe('DbUpdateFarm UseCase', () => {
     await sut.update(params)
     expect(updateFarmRepositorySpy.params).toEqual(params)
   })
+  test('Deve retornar o id do fazenda atualizada em caso de sucesso', async () => {
+    const { sut, updateFarmRepositorySpy } = makeSut()
+    const newFarmId = await sut.update(mockUpdateFarmParams())
+    expect(newFarmId).toEqual(updateFarmRepositorySpy.farmId)
+  })
 })
