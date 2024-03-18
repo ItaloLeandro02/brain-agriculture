@@ -20,11 +20,18 @@ export const mockLoadDashboardResult = (): LoadDashboard.Result => ({
     name: 'Soja',
     percent: 35
   }],
-  pieChartLandUse: [{
+  pieChartVegerationAreaLandUse: [{
     farmName: 'Fazendinha Feliz',
     percent: 60
   }, {
     farmName: 'Rancho Kent',
     percent: 40
+  }],
+  pieChartAgriculturalAreaLandUse: [{
+    farmName: 'Fazendinha Feliz',
+    percent: 70
+  }, {
+    farmName: 'Rancho Kent',
+    percent: 30
   }]
 })
