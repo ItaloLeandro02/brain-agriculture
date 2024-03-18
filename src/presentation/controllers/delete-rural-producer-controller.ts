@@ -1,13 +1,14 @@
 import type { Controller, HttpResponse } from '@/presentation/protocols'
 import { notFound, serverError } from '@/presentation/helpers'
-import type { DeleteFarm, DeleteRuralProducer } from '@/domain/usecases'
+import type { DeleteFarm, DeletePlantedCrops, DeleteRuralProducer } from '@/domain/usecases'
 import type { LoadRuralProducerByIdRepository } from '@/data/protocols'
 
 export class DeleteRuralProducerController implements Controller {
   constructor (
     private readonly loadRuralProducerByIdRepository: LoadRuralProducerByIdRepository,
     private readonly deleteRuralProducer: DeleteRuralProducer,
-    private readonly deleteFarm: DeleteFarm
+    private readonly deleteFarm: DeleteFarm,
+    private readonly deletePlantedCrops: DeletePlantedCrops
   ) {}
 
   async handle (request: any): Promise<HttpResponse> {
@@ -17,7 +18,8 @@ export class DeleteRuralProducerController implements Controller {
         return notFound()
       }
       await this.deleteRuralProducer.delete(request.id)
-      await this.deleteFarm.delete(request.id)
+      const farmId = await this.deleteFarm.delete(request.id)
+      await this.deletePlantedCrops.delete(farmId)
     } catch (error) {
       return serverError(error as Error)
     }
