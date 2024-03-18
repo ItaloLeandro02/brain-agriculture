@@ -1,27 +1,41 @@
 import { faker } from '@faker-js/faker'
-import { ValidationSpy } from '@/tests/presentation/mocks'
 import { UpdateRuralProducerController } from '@/presentation/controllers'
 import { badRequest, noContent, serverError } from '@/presentation/helpers'
+import type { LoadRuralProducerById } from '@/domain/usecases'
+import { ValidationSpy } from '@/tests/presentation/mocks'
 import { UpdateFarmRepositorySpy, UpdatePlantedCropsRepositorySpy, UpdateRuralProducerRepositorySpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: UpdateRuralProducerController
   validationSpy: ValidationSpy
+  loadRuralProducerByIdSpy: LoadRuralProducerByIdSpy
   updateRuralProducerSpy: UpdateRuralProducerRepositorySpy
   updateFarmSpy: UpdateFarmRepositorySpy
   updatePlantedCropsSpy: UpdatePlantedCropsRepositorySpy
 }
 
+export class LoadRuralProducerByIdSpy implements LoadRuralProducerById {
+  id: number
+  result = true
+
+  async load (id: number): Promise<boolean> {
+    this.id = id
+    return await Promise.resolve(this.result)
+  }
+}
+
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
+  const loadRuralProducerByIdSpy = new LoadRuralProducerByIdSpy()
   const updateRuralProducerSpy = new UpdateRuralProducerRepositorySpy()
   const updateFarmSpy = new UpdateFarmRepositorySpy()
   const updatePlantedCropsSpy = new UpdatePlantedCropsRepositorySpy()
-  const sut = new UpdateRuralProducerController(validationSpy, updateRuralProducerSpy, updateFarmSpy, updatePlantedCropsSpy)
+  const sut = new UpdateRuralProducerController(validationSpy, loadRuralProducerByIdSpy, updateRuralProducerSpy, updateFarmSpy, updatePlantedCropsSpy)
   return {
     sut,
     validationSpy,
+    loadRuralProducerByIdSpy,
     updateRuralProducerSpy,
     updateFarmSpy,
     updatePlantedCropsSpy
@@ -54,6 +68,12 @@ describe('UpdateRuralProducer Controller', () => {
     const request = mockRequest()
     const response = await sut.handle(request)
     expect(response).toEqual(badRequest(new Error()))
+  })
+  test('Deve chamar LoadRuralProducerById com os valores corretos', async () => {
+    const { sut, loadRuralProducerByIdSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(loadRuralProducerByIdSpy.id).toBe(request.id)
   })
   test('Deve chamar UpdateRuralProducer com os valores corretos', async () => {
     const { sut, updateRuralProducerSpy } = makeSut()
@@ -106,7 +126,7 @@ describe('UpdateRuralProducer Controller', () => {
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(serverError(new Error()))
   })
-  test('Deve retornar 200 em caso de sucesso', async () => {
+  test('Deve retornar 204 em caso de sucesso', async () => {
     const { sut } = makeSut()
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(noContent())
