@@ -1,4 +1,4 @@
-import type { AddPlantedCropsRepository, UpdatePlantedCropsRepository } from '@/data/protocols'
+import type { AddPlantedCropsRepository, DeletePlantedCropsRepository, UpdatePlantedCropsRepository } from '@/data/protocols'
 
 export class AddPlantedCropsRepositorySpy implements AddPlantedCropsRepository {
   params: AddPlantedCropsRepository.Params
@@ -14,6 +14,15 @@ export class UpdatePlantedCropsRepositorySpy implements UpdatePlantedCropsReposi
 
   async update (params: UpdatePlantedCropsRepository.Params): Promise<void> {
     this.params = params
+    await Promise.resolve()
+  }
+}
+
+export class DeletePlantedCropsRepositorySpy implements DeletePlantedCropsRepository {
+  farmId: number
+
+  async delete (farmId: number): Promise<void> {
+    this.farmId = farmId
     await Promise.resolve()
   }
 }
