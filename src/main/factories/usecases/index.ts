@@ -1,6 +1,7 @@
 export * from './db-add-farm-factory'
 export * from './db-add-planted-crop-factory'
 export * from './db-add-rural-producer-factory'
+export * from './db-load-rural-producer-by-id-repository-factory'
 export * from './db-update-farm-factory'
 export * from './db-update-planted-crop-factory'
 export * from './db-update-rural-producer-factory'
