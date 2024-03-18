@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { UpdateRuralProducerController } from '@/presentation/controllers'
-import { badRequest, noContent, serverError } from '@/presentation/helpers'
+import { badRequest, noContent, notFound, serverError } from '@/presentation/helpers'
 import type { LoadRuralProducerById } from '@/domain/usecases'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { UpdateFarmRepositorySpy, UpdatePlantedCropsRepositorySpy, UpdateRuralProducerRepositorySpy } from '@/tests/data/mocks'
@@ -131,6 +131,12 @@ describe('UpdateRuralProducer Controller', () => {
     jest.spyOn(updatePlantedCropsSpy, 'update').mockImplementationOnce(throwError)
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(serverError(new Error()))
+  })
+  test('Deve retornar 404 caso LoadRuralProducerById retorne false', async () => {
+    const { sut, loadRuralProducerByIdSpy } = makeSut()
+    loadRuralProducerByIdSpy.result = false
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(notFound())
   })
   test('Deve retornar 204 em caso de sucesso', async () => {
     const { sut } = makeSut()
