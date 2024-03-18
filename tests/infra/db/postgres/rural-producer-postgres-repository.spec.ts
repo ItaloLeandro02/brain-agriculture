@@ -61,4 +61,20 @@ describe('RuralProducer Postgres Repository', () => {
       expect(ruralProducerDatabase[0].name).toBe(updateParams.name)
     })
   })
+
+  describe('delete', () => {
+    test('Deve deletar um produtor rural em caso de sucesso', async () => {
+      const sut = makeSut()
+      const addParams = mockAddRuralProducerParams()
+      const newRuralProducerId = await sut.add(addParams)
+      let ruralProducerDatabase = await KnexHelper.client.select('*').from('rural_producer')
+      expect(ruralProducerDatabase).toHaveLength(1)
+      expect(ruralProducerDatabase[0].id).toBe(newRuralProducerId)
+      expect(ruralProducerDatabase[0].cpf_cnpj).toBe(addParams.cpfCnpj)
+      expect(ruralProducerDatabase[0].name).toBe(addParams.name)
+      await sut.delete(newRuralProducerId)
+      ruralProducerDatabase = await KnexHelper.client.select('*').from('rural_producer')
+      expect(ruralProducerDatabase).toHaveLength(0)
+    })
+  })
 })
