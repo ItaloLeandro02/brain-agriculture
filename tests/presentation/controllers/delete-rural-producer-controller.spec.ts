@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { DeleteRuralProducerController } from '@/presentation/controllers'
-import { serverError } from '@/presentation/helpers'
+import { notFound, serverError } from '@/presentation/helpers'
 import { LoadRuralProducerByIdRepositorySpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
@@ -34,5 +34,11 @@ describe('DeleteRuralProducer Controller', () => {
     jest.spyOn(loadRuralProducerByIdSpy, 'load').mockImplementationOnce(throwError)
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(serverError(new Error()))
+  })
+  test('Deve retornar 404 caso LoadRuralProducerById retorne false', async () => {
+    const { sut, loadRuralProducerByIdSpy } = makeSut()
+    loadRuralProducerByIdSpy.existsOnDatabase = false
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(notFound())
   })
 })
