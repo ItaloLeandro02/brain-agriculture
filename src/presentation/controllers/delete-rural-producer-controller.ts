@@ -1,9 +1,13 @@
 import type { Controller, HttpResponse } from '@/presentation/protocols'
 import { notFound, serverError } from '@/presentation/helpers'
+import type { DeleteRuralProducer } from '@/domain/usecases'
 import type { LoadRuralProducerByIdRepository } from '@/data/protocols'
 
 export class DeleteRuralProducerController implements Controller {
-  constructor (private readonly loadRuralProducerByIdRepository: LoadRuralProducerByIdRepository) {}
+  constructor (
+    private readonly loadRuralProducerByIdRepository: LoadRuralProducerByIdRepository,
+    private readonly deleteRuralProducer: DeleteRuralProducer
+  ) {}
 
   async handle (request: any): Promise<HttpResponse> {
     try {
@@ -11,6 +15,7 @@ export class DeleteRuralProducerController implements Controller {
       if (!exists) {
         return notFound()
       }
+      await this.deleteRuralProducer.delete(request.id)
     } catch (error) {
       return serverError(error as Error)
     }
