@@ -99,4 +99,10 @@ describe('UpdateRuralProducer Controller', () => {
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(serverError(new Error()))
   })
+  test('Deve retornar 500 caso UpdatePlantedCrop lance uma exceção', async () => {
+    const { sut, updatePlantedCropsSpy } = makeSut()
+    jest.spyOn(updatePlantedCropsSpy, 'update').mockImplementationOnce(throwError)
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
+  })
 })
