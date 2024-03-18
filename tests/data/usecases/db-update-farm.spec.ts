@@ -1,5 +1,5 @@
 import { DbUpdateFarm } from '@/data/usecases'
-import { mockUpdateFarmParams } from '@/tests/domain/mocks'
+import { mockUpdateFarmParams, throwError } from '@/tests/domain/mocks'
 import { UpdateFarmRepositorySpy } from '@/tests/data/mocks'
 
 type SutTypes = {
@@ -27,5 +27,11 @@ describe('DbUpdateFarm UseCase', () => {
     const { sut, updateFarmRepositorySpy } = makeSut()
     const newFarmId = await sut.update(mockUpdateFarmParams())
     expect(newFarmId).toEqual(updateFarmRepositorySpy.farmId)
+  })
+  test('Deve lançar uma exceção caso UpdateFarmRepository lance uma exceção', async () => {
+    const { sut, updateFarmRepositorySpy } = makeSut()
+    jest.spyOn(updateFarmRepositorySpy, 'update').mockImplementationOnce(throwError)
+    const promise = sut.update(mockUpdateFarmParams())
+    await expect(promise).rejects.toThrow()
   })
 })
