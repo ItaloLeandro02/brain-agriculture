@@ -1,12 +1,17 @@
 import type { Controller, HttpResponse } from '@/presentation/protocols'
+import { serverError } from '@/presentation/helpers'
 import type { LoadRuralProducerByIdRepository } from '@/data/protocols'
 
 export class DeleteRuralProducerController implements Controller {
   constructor (private readonly loadRuralProducerByIdRepository: LoadRuralProducerByIdRepository) {}
 
   async handle (request: any): Promise<HttpResponse> {
-    await this.loadRuralProducerByIdRepository.load(request.id)
-    return null
+    try {
+      await this.loadRuralProducerByIdRepository.load(request.id)
+      return null
+    } catch (error) {
+      return serverError(error as Error)
+    }
   }
 }
 
