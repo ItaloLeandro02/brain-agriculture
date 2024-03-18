@@ -1,23 +1,22 @@
 import { faker } from '@faker-js/faker'
 import { DeleteRuralProducerController } from '@/presentation/controllers'
 import { noContent, notFound, serverError } from '@/presentation/helpers'
-import type { DeleteFarm, DeletePlantedCrops, DeleteRuralProducer } from '@/domain/usecases'
-import { LoadRuralProducerByIdRepositorySpy } from '@/tests/data/mocks'
+import { DeleteFarmRepositorySpy, DeletePlantedCropsRepositorySpy, DeleteRuralProducerRepositorySpy, LoadRuralProducerByIdRepositorySpy } from '@/tests/data/mocks'
 import { throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
   sut: DeleteRuralProducerController
   loadRuralProducerByIdSpy: LoadRuralProducerByIdRepositorySpy
-  deleteRuralProducerSpy: DeleteRuralProducerSpy
-  deleteFarmSpy: DeleteFarmSpy
-  deletePlantedCropsSpy: DeletePlantedCropsSpy
+  deleteRuralProducerSpy: DeleteRuralProducerRepositorySpy
+  deleteFarmSpy: DeleteFarmRepositorySpy
+  deletePlantedCropsSpy: DeletePlantedCropsRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const loadRuralProducerByIdSpy = new LoadRuralProducerByIdRepositorySpy()
-  const deleteRuralProducerSpy = new DeleteRuralProducerSpy()
-  const deleteFarmSpy = new DeleteFarmSpy()
-  const deletePlantedCropsSpy = new DeletePlantedCropsSpy()
+  const deleteRuralProducerSpy = new DeleteRuralProducerRepositorySpy()
+  const deleteFarmSpy = new DeleteFarmRepositorySpy()
+  const deletePlantedCropsSpy = new DeletePlantedCropsRepositorySpy()
   const sut = new DeleteRuralProducerController(loadRuralProducerByIdSpy, deleteRuralProducerSpy, deleteFarmSpy, deletePlantedCropsSpy)
   return {
     sut,
@@ -31,34 +30,6 @@ const makeSut = (): SutTypes => {
 const mockRequest = (): DeleteRuralProducerController.Request => ({
   id: faker.number.int({ min: 1, max: 100 })
 })
-
-export class DeleteRuralProducerSpy implements DeleteRuralProducer {
-  id: number
-
-  async delete (id: number): Promise<void> {
-    this.id = id
-    await Promise.resolve()
-  }
-}
-
-export class DeleteFarmSpy implements DeleteFarm {
-  ruralProducerId: number
-  farmId = faker.number.int({ min: 1, max: 100 })
-
-  async delete (ruralProducerId: number): Promise<number> {
-    this.ruralProducerId = ruralProducerId
-    return await Promise.resolve(this.farmId)
-  }
-}
-
-export class DeletePlantedCropsSpy implements DeletePlantedCrops {
-  farmId: number
-
-  async delete (farmId: number): Promise<void> {
-    this.farmId = farmId
-    await Promise.resolve()
-  }
-}
 
 describe('DeleteRuralProducer Controller', () => {
   test('Deve chamar LoadRuralProducerById com os valores corretos', async () => {
