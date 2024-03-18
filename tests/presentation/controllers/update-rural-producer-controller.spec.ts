@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { ValidationSpy } from '@/tests/presentation/mocks'
 import { UpdateRuralProducerController } from '@/presentation/controllers'
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, noContent, serverError } from '@/presentation/helpers'
 import { UpdateFarmSpy, UpdatePlantedCropsSpy, UpdateRuralProducerSpy, throwError } from '@/tests/domain/mocks'
 
 type SutTypes = {
@@ -104,5 +104,10 @@ describe('UpdateRuralProducer Controller', () => {
     jest.spyOn(updatePlantedCropsSpy, 'update').mockImplementationOnce(throwError)
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(serverError(new Error()))
+  })
+  test('Deve retornar 200 em caso de sucesso', async () => {
+    const { sut } = makeSut()
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(noContent())
   })
 })
