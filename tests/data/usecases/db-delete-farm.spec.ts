@@ -23,4 +23,9 @@ describe('DbDeleteFarm UseCase', () => {
     await sut.delete(ruralProducerId)
     expect(deleteFarmRepositorySpy.ruralProducerId).toBe(ruralProducerId)
   })
+  test('Deve retornar o id do fazenda deletada em caso de sucesso', async () => {
+    const { sut, deleteFarmRepositorySpy } = makeSut()
+    const farmId = await sut.delete(faker.number.int({ min: 1, max: 100 }))
+    expect(farmId).toEqual(deleteFarmRepositorySpy.farmId)
+  })
 })
