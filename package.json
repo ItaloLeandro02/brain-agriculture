@@ -9,7 +9,7 @@
     "start": "node dist/main/server.js",
     "up": "npm run build && docker compose up -d",
     "down": "docker compose down",
-    "test": "NODE_ENV=test jest --passWithNoTests --runInBand --detectOpenHandles",
+    "test": "NODE_ENV=test jest --passWithNoTests --silent --noStackTrace --runInBand --detectOpenHandles",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:unit": "npm test -- --watch -c jest.unit.config.js",
     "test:integration": "npm test -- --watch -c jest.integration.config.js",
