@@ -6,6 +6,7 @@ export const KnexHelper = {
   client: null as Knex,
 
   async connect (): Promise<void> {
+    console.log(env.postgresUrl)
     this.client = knex({
       client: 'pg',
       connection: env.postgresUrl,
