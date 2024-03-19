@@ -8,6 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: test
     steps:
+      - name: Use variables
+        run: |
+          echo "postgres_url_test variable : $POSTGRES_URL_TEST"
+        env:
+          POSTGRES_URL_TEST: ${{ vars.POSTGRES_URL_TEST }}
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
