@@ -1,6 +1,4 @@
-[![Brain Agriculture CI](https://github.com/ItaloLeandro02/brain-agriculture/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ItaloLeandro02/brain-agriculture/actions/workflows/ci.yml)
-
-[![Coverage Status](https://coveralls.io/repos/github/ItaloLeandro02/brain-agriculture/badge.svg?branch=main)](https://coveralls.io/github/ItaloLeandro02/brain-agriculture?branch=main)
+[![Brain Agriculture CI](https://github.com/ItaloLeandro02/brain-agriculture/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ItaloLeandro02/brain-agriculture/actions/workflows/ci.yml) [![Coverage Status](https://coveralls.io/repos/github/ItaloLeandro02/brain-agriculture/badge.svg?branch=main)](https://coveralls.io/github/ItaloLeandro02/brain-agriculture?branch=main)
 
 # Brain Agriculture
 
