@@ -11,11 +11,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: 'Create env file'
-        run: |
-          echo "PORT=5050" >> .env
-					echo "POSTGRES_URL=postgres://postgres:12345@localhost" >> .env
-					echo "POSTGRES_URL_TEST=postgres://postgres@localhost:5555" >> .env
       - run: npm install
       - run: npm run test:ci
       - uses: coverallsapp/github-action@v2
